@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: docker.io/library/telegraf
+IMAGE_TAG: latest
+APP: telegraf
+NETWORK: ansible
+PORT_NUMBER: 8125
+USER: troy

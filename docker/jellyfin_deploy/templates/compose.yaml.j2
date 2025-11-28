@@ -1,0 +1,28 @@
+---
+services:
+  {{ APP }}:
+    image: {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+    container_name: {{ APP }}
+    hostname: {{ APP }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    ports:
+      - {{ PORT_NUMBER }}:8096/tcp
+    user: 1000:1000
+    volumes:
+      - /home/{{ USER }}/containers/storage/{{ APP }}:/cache:rw
+      - /home/{{ USER }}/containers/storage/{{ APP }}:/config:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - {{ NETWORK }}
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+networks:
+  {{ NETWORK }}:
+    external: true

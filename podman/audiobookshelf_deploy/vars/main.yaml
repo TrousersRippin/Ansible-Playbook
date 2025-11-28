@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: docker.io/advplyr/audiobookshelf
+IMAGE_TAG: latest
+APP: audiobookshelf
+NETWORK: ansible
+PORT_NUMBER: 13378
+USER: troy
+ANSIBLE_USER_ID: 1000

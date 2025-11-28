@@ -1,0 +1,28 @@
+---
+services:
+  {{ APP }}:
+    image: {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+    container_name: {{ APP }}
+    hostname: {{ APP }}
+    restart: unless-stopped
+    env_file:
+      - .env
+    user: "${UID}:{{ docker_gid }}"
+    ports:
+      - {{ PORT_NUMBER }}:8125/tcp
+    volumes:
+      - /home/{{ USER }}/containers/storage/{{ APP }}/config/{{ APP }}.conf:/etc/{{ APP }}/{{ APP }}.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - {{ NETWORK }}
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+networks:
+  {{ NETWORK }}:
+    external: true

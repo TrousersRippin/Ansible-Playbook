@@ -1,0 +1,9 @@
+---
+IMAGE_NAME: docker.io/pihole/pihole
+IMAGE_TAG: latest
+APP: pihole
+NETWORK: ansible
+PORT_NUMBER: 8003
+PORT_NUMBER1: 53
+USER: troy
+ANSIBLE_USER_ID: 1000

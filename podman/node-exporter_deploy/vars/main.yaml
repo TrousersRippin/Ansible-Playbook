@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: docker.io/prom/node-exporter
+IMAGE_TAG: latest
+APP: node-exporter
+NETWORKNAME: ansible
+PORT_NUMBER: 9100
+USER: troy
+ANSIBLE_USER_ID: 1000

@@ -1,0 +1,8 @@
+---
+debian_machines:
+  hosts:
+    debian:
+      ansible_host: 10.1.2.*
+      ansible_become: true
+      ansible_become_method: sudo
+      ansible_python_interpreter: /usr/bin/python3.13

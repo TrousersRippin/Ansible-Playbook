@@ -1,0 +1,9 @@
+---
+IMAGE_NAME: docker.io/pihole/pihole
+IMAGE_TAG: latest
+APP: pihole
+NETWORK: ansible
+PORT_NUMBER1: 80
+PORT_NUMBER2: 443
+PORT_NUMBER3: 53
+USER: troy

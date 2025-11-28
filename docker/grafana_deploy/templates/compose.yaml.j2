@@ -1,0 +1,31 @@
+---
+services:
+  {{ APP }}:
+    image: {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+    container_name: {{ APP }}
+    hostname: {{ APP }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
+    ports:
+      - {{ PORT_NUMBER }}:3333/tcp
+    volumes:
+      - /home/{{ USER }}/containers/storage/{{ APP }}/config/grafana.ini:/etc/grafana/grafana.ini:rw
+      - /home/{{ USER }}/containers/storage/{{ APP }}/dashboards:/etc/grafana/dashboards:ro
+      - /home/{{ USER }}/containers/storage/{{ APP }}/provisioning:/etc/grafana/provisioning:ro
+      - /home/{{ USER }}/containers/storage/{{ APP }}/data:/var/lib/grafana:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - {{ NETWORK }}
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+networks:
+  {{ NETWORK }}:
+    external: true

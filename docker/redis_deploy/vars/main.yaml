@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: docker.io/library/redis
+IMAGE_TAG: latest
+APP: redis
+NETWORK: ansible
+PORT_NUMBER: 6379
+USER: troy

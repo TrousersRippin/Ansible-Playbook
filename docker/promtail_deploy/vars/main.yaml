@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: docker.io/grafana/promtail
+IMAGE_TAG: latest
+APP: promtail
+NETWORKNAME: ansible
+PORT_NUMBER: 1514
+USER: troy

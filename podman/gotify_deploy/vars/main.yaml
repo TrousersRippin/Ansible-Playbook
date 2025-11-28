@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: docker.io/gotify/server
+IMAGE_TAG: latest
+APP: gotify
+NETWORK: ansible
+PORT_NUMBER: 8001
+USER: troy
+ANSIBLE_USER_ID: 1000

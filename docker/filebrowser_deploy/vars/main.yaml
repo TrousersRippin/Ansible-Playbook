@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: docker.io/filebrowser/filebrowser
+IMAGE_TAG: latest
+APP: filebrowser
+NETWORK: ansible
+PORT_NUMBER: 8005
+USER: troy

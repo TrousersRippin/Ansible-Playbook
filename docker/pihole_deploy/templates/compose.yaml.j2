@@ -1,0 +1,39 @@
+---
+services:
+  {{ APP }}:
+    image: {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+    container_name: {{ APP }}
+    hostname: {{ APP }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - PIHOLE_UID=1000
+      - PIHOLE_GID=1000
+      - FTLCONF_webserver_api_password=''
+    cap_add:
+      - NET_ADMIN
+      - NET_BIND_SERVICE
+      - NET_RAW
+      - SYS_TIME
+      - SYS_NICE
+      - CHOWN
+    ports:
+      - {{ PORT_NUMBER1 }}:80/tcp
+      - {{ PORT_NUMBER2 }}:443/tcp
+      - {{ PORT_NUMBER3 }}:53/tcp
+      - {{ PORT_NUMBER3 }}:53/udp
+    volumes:
+      - /home/{{ USER }}/containers/storage/{{ APP }}/config:/etc/pihole:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - {{ NETWORK }}
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+networks:
+  {{ NETWORK }}:
+    external: true

@@ -1,0 +1,11 @@
+[Unit]
+Description=Ansible Network
+After=network-online.target
+
+[Network]
+NetworkName={{ NETWORK }}
+Subnet={{ SUBNET }}
+Gateway={{ GATEWAY }}
+
+[Install]
+WantedBy=multi-user.target default.target

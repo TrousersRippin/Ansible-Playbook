@@ -1,0 +1,9 @@
+---
+IMAGE_NAME: docker.io/syncthing/syncthing
+IMAGE_TAG: latest
+APP: syncthing
+NETWORK: ansible
+PORT_NUMBER1: 8384
+PORT_NUMBER2: 21027
+PORT_NUMBER3: 22000
+USER: troy

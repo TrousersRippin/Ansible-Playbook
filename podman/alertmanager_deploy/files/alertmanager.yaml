@@ -1,0 +1,13 @@
+route:
+  receiver: 'mail'
+  repeat_interval: 1h
+  group_by: [ alertname ]
+
+receivers:
+  - name: 'mail'
+    email_configs:
+      - smarthost:
+        auth_username:
+        auth_password: 
+        from:
+        to:

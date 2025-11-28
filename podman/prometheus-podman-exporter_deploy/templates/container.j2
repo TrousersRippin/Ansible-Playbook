@@ -1,0 +1,32 @@
+[Unit]
+Description={{ APP }}
+Wants=network-online.target
+After=network-online.target podman.socket local-fs.target
+
+[Container]
+ContainerName={{ APP }}
+Image={{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+AutoUpdate=registry
+Timezone=local
+
+Environment=CONTAINER_HOST=unix:///run/podman/podman.sock
+Exec=--collector.cache_duration 50000
+
+SecurityLabelDisable=true
+UserNS=keep-id:uid=65534
+
+HostName={{ APP }}
+Network={{ NETWORK }}.network
+PublishPort={{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
+
+Volume=/%t/podman/podman.sock:/run/podman/podman.sock:ro
+
+[Service]
+NoNewPrivileges=true
+Restart=on-failure
+TimeoutStartSec=300
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target default.target

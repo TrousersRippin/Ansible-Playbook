@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: docker.io/library/mariadb
+IMAGE_TAG: latest
+APP: mariadb
+NETWORK: ansible
+PORT_NUMBER: 3306
+USER: troy

@@ -1,0 +1,5 @@
+---
+IMAGE_NAME: docker.io/containrrr/watchtower
+IMAGE_TAG: latest
+APP: watchtower
+USER: troy

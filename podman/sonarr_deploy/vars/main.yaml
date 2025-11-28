@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: lscr.io/linuxserver/sonarr
+IMAGE_TAG: latest
+APP: sonarr
+NETWORK: ansible
+PORT_NUMBER: 8989
+USER: troy
+ANSIBLE_USER_ID: 1000

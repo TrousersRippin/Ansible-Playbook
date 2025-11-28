@@ -1,0 +1,44 @@
+---
+- name: Get distribution release fact
+  ansible.builtin.setup:
+    gather_subset:
+      - distribution_release
+      - architecture
+
+- name: Install Docker with APT
+  ansible.builtin.apt:
+    name: 
+      - docker.io
+      - docker-cli
+      - docker-compose
+    state: present
+    update_cache: true
+
+- name: Add user to Docker group
+  ansible.builtin.user:
+    name: "{{ USER }}"
+    groups: docker
+    append: true
+  notify: Restart Docker
+
+- name: Enable Docker service
+  ansible.builtin.systemd:
+    name: docker
+    enabled: true
+    state: started
+
+- name: Create a Docker network
+  docker_network:
+    name: ansible
+    ipam_config:
+      - subnet: "{{ SUBNET }}"
+        gateway: "{{ GATEWAY }}"
+
+- name: Verify Docker installation
+  become: false
+  command: docker --version
+  register: docker_version
+
+- name: Show installed Docker version
+  debug:
+    msg: "Docker version: {{ docker_version.stdout }}"

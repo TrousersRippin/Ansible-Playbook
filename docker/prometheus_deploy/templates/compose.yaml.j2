@@ -1,0 +1,35 @@
+---
+services:
+  {{ APP }}:
+    image: {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+    container_name: {{ APP }}
+    hostname: {{ APP }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    command:
+      - --config.file=/etc/{{ APP }}/{{ APP }}.yaml
+      - --web.enable-lifecycle
+    ports:
+      - {{ PORT_NUMBER }}:9090/tcp
+    volumes:
+      - /home/{{ USER }}/containers/storage/{{ APP }}/config/{{ APP }}.yaml:/etc/{{ APP }}/{{ APP }}.yaml:ro
+      - /home/{{ USER }}/containers/storage/{{ APP }}/config/alerts.yaml:/etc/{{ APP }}/alerts.yaml:ro
+      - {{ APP }}-data:/prometheus:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - {{ NETWORK }}
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+volumes:
+  {{ APP }}-data:
+    external: true
+
+networks:
+  {{ NETWORK }}:
+    external: true

@@ -1,0 +1,35 @@
+[Unit]
+Description={{ APP }}
+Wants=network-online.target
+After=network-online.target local-fs.target
+
+[Container]
+ContainerName={{ APP }}
+Image={{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+AutoUpdate=registry
+Timezone=local
+
+Environment=FB_USERNAME=troy
+Environment=FB_PASSWORD=$$2a$$10$$MePbMGZ1GKEYqmB3tDh5Bea5b5WhirVloeR1hm6hxieEgfhQTpCXm
+
+HealthCmd=none
+
+UserNS=keep-id:uid=1000,gid=1000
+
+HostName={{ APP }}
+Network={{ NETWORK }}.network
+PublishPort={{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
+
+Volume=%h/containers/storage/{{ APP }}/config:/config:rw,Z
+Volume=%h/containers/storage/{{ APP }}/database:/database:rw,Z
+Volume=/:/srv:rw
+
+[Service]
+NoNewPrivileges=true
+Restart=on-failure
+TimeoutStartSec=300
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target default.target

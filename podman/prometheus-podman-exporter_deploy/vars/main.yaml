@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: quay.io/navidys/prometheus-podman-exporter
+IMAGE_TAG: latest
+APP: prometheus-podman-exporter
+NETWORKNAME: ansible
+PORT_NUMBER: 9882
+USER: troy
+ANSIBLE_USER_ID: 1000

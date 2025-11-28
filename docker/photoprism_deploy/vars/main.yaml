@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: docker.io/photoprism/photoprism
+IMAGE_TAG: latest
+APP: photoprism
+NETWORK: ansible
+PORT_NUMBER: 2342
+USER: troy

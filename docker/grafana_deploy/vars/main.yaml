@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: docker.io/grafana/grafana
+IMAGE_TAG: latest
+APP: grafana
+NETWORK: ansible
+PORT_NUMBER: 3333
+USER: troy
