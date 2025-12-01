@@ -1,4 +1,4 @@
-#cd ~/Documents/Tech/Ansible/Ansible-Playbook
+#cd ~/Documents/Tech/Ansible-Playbook/docker
 #
 #ansible-vault encrypt /Users/troy/Documents/Tech/Ansible-Playbook/docker/docker_install/vars/main.yaml
 #ansible-vault decrypt /Users/troy/Documents/Tech/Ansible-Playbook/docker/docker_install/vars/main.yaml
