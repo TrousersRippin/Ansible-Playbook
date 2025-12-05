@@ -48,4 +48,5 @@
     - telegraf_deploy
     #- transmission_deploy
     #- uptime-kuma_deploy
+    - vaultwarden_deploy
     - watchtower_deploy

@@ -30,6 +30,7 @@ ufw_allowed_ports:
   - { port: 8125, proto: tcp, comment: 'Telegraf' }
   #- { port: 8181, proto: tcp, comment: 'Tautulli' }
   #- { port: 8384, proto: tcp, comment: 'Syncthing' }
+  - { port: 8877, proto: tcp, comment: 'Vaultwarden' }
   #- { port: 8989, proto: tcp, comment: 'Sonarr' }
   - { port: 9090, proto: tcp, comment: 'Prometheus' }
   #- { port: 9091, proto: tcp, comment: 'Transmission' }

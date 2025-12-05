@@ -22,6 +22,7 @@ firewalld_allowed_ports:
   #- 8096/tcp     # Jellyfin
   #- 8181/tcp     # Tautulli
   #- 8384/tcp     # Syncthing
+  - 8877/tcp    # Vaultwarden
   #- 8989/tcp     # Sonarr
   - 9092/tcp     # Prometheus
   #- 9091/tcp     # Transmission

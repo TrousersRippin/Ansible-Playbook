@@ -13,15 +13,15 @@
   roles:
     - podman_install
     - firewalld_install
-    - alertmanager_deploy
+    #- alertmanager_deploy
     #- audiobookshelf_deploy
     #- bazarr_deploy
     - dozzle_deploy
-    - filebrowser_deploy
+    #- filebrowser_deploy
     #- ghost_deploy
     #- gitea_deploy
     #- gotify_deploy
-    - grafana_deploy
+    #- grafana_deploy
     #- jellyfin_deploy
     #- jellyseerr_deploy
     #- kavita_deploy
@@ -29,14 +29,14 @@
     #- memos_deploy
     #- mkvtoolnix_deploy
     #- myspeed_deploy
-    - node-exporter_deploy
+    #- node-exporter_deploy
     #- overseerr_deploy
     #- paperless-ngx_deploy
     #- photoprism_deploy
     #- pihole_deploy
     #- plex_deploy
-    - prometheus_deploy
-    - prometheus-podman-exporter_deploy
+    #- prometheus_deploy
+    #- prometheus-podman-exporter_deploy
     #- prowlarr_deploy
     #- radarr_deploy
     #- redis_deploy
@@ -45,3 +45,4 @@
     #- tautulli_deploy
     #- transmission_deploy
     #- uptime-kuma_deploy
+    - vaultwarden_deploy

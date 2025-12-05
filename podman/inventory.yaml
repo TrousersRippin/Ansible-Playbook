@@ -2,7 +2,7 @@
 virtual_machines:
   hosts:
     fedora:
-      ansible_host: 172.16.19.101
+      ansible_host: 192.168.23.101
       ansible_become: true
       ansible_become_method: sudo
       ansible_python_interpreter: /usr/bin/python3.14
