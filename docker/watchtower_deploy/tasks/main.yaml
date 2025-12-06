@@ -26,6 +26,14 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
+- name: Add env file
+  ansible.builtin.template:
+    src: "templates/env.j2"
+    dest: "/home/{{ USER }}/.config/compose/{{ APP }}/.env"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
 - name: Ensure Docker image is present
   community.docker.docker_image:
     name: "{{ IMAGE_NAME }}"

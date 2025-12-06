@@ -17,7 +17,7 @@
     #- audiobookshelf_deploy
     #- bazarr_deploy
     - dozzle_deploy
-    #- filebrowser_deploy
+    - filebrowser_deploy
     #- ghost_deploy
     #- gitea_deploy
     #- gotify_deploy
@@ -38,6 +38,7 @@
     #- prometheus_deploy
     #- prometheus-podman-exporter_deploy
     #- prowlarr_deploy
+    #- pulse_deploy
     #- radarr_deploy
     #- redis_deploy
     #- sonarr_deploy
@@ -45,4 +46,4 @@
     #- tautulli_deploy
     #- transmission_deploy
     #- uptime-kuma_deploy
-    - vaultwarden_deploy
+    #- vaultwarden_deploy

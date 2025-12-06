@@ -14,14 +14,14 @@
     },
 
   "mail": {
-    "from": ,
-    "transport": ,
+    "from": "ansible@icloud.com",
+    "transport": "SMTP",
     "options": {
-      "host": ,
-      "port": ,
+      "host": "smtp.mail.me.com",
+      "port": 587,
       "auth": {
-        "user": "user@email.com",
-        "pass": "***********"}
+        "user": "ansible@icloud.com",
+        "pass": "abcd-efgh-ijcl-mnop"}
         }
     },
 

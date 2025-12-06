@@ -50,6 +50,14 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
+- name: Add container systemd file
+  ansible.builtin.template:
+    src: "templates/env.j2"
+    dest: "/home/{{ USER }}/.config/containers/systemd/{{ APP }}/{{ APP }}.env"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
 - name: Check if image exists
   ansible.builtin.command: >
     podman image exists {{ IMAGE_NAME }}:{{ IMAGE_TAG }}

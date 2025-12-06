@@ -9,9 +9,7 @@ Image={{ IMAGE_NAME }}:{{ IMAGE_TAG }}
 AutoUpdate=registry
 Timezone=local
 
-Environment=PIHOLE_UID={{ ANSIBLE_USER_ID }}
-Environment=PIHOLE_GID={{ ANSIBLE_USER_ID }}
-Environment=FTLCONF_webserver_api_password=''
+EnvironmentFile={{ APP }}.env
 
 AddCapability=NET_ADMIN
 AddCapability=NET_BIND_SERVICE

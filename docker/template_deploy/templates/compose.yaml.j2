@@ -7,10 +7,10 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    environment:
-      - TZ=Europe/Stockholm
+    env_file:
+      - .env
     ports:
-
+      - {{ PORT_NUMBER }}:****/tcp
     volumes:
       - /home/{{ USER }}/containers/storage/{{ APP }}/config:/config:rw
       - /etc/localtime:/etc/localtime:ro
