@@ -13,7 +13,7 @@ services:
       - --config.file=/etc/{{ APP }}/{{ APP }}.yaml
       - --web.enable-lifecycle
     ports:
-      - {{ PORT_NUMBER }}:9090/tcp
+      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
       - /home/{{ USER }}/containers/storage/{{ APP }}/config/{{ APP }}.yaml:/etc/{{ APP }}/{{ APP }}.yaml:ro
       - /home/{{ USER }}/containers/storage/{{ APP }}/config/alerts.yaml:/etc/{{ APP }}/alerts.yaml:ro

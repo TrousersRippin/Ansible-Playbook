@@ -12,8 +12,8 @@ services:
     command:
       - --config.file=/etc/{{ APP }}/{{ APP }}.yaml
     ports:
-      - {{ PORT_NUMBER1 }}:3100/tcp
-      - {{ PORT_NUMBER2 }}:9096/tcp
+      - {{ PORT_NUMBER1 }}:{{ PORT_NUMBER1 }}/tcp
+      - {{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/tcp
     volumes:
       - /home/{{ USER }}/containers/storage/{{ APP }}/config/{{ APP }}.yaml:/etc/{{ APP }}/{{ APP }}.yaml:ro
       - /etc/localtime:/etc/localtime:ro

@@ -20,10 +20,10 @@ services:
       - SYS_NICE
       - CHOWN
     ports:
-      - {{ PORT_NUMBER1 }}:80/tcp
-      - {{ PORT_NUMBER2 }}:443/tcp
-      - {{ PORT_NUMBER3 }}:53/tcp
-      - {{ PORT_NUMBER3 }}:53/udp
+      - {{ PORT_NUMBER1 }}:{{ PORT_NUMBER1 }}/tcp
+      - {{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/tcp
+      - {{ PORT_NUMBER3 }}:{{ PORT_NUMBER3 }}/tcp
+      - {{ PORT_NUMBER3 }}:{{ PORT_NUMBER3 }}/udp
     volumes:
       - /home/{{ USER }}/containers/storage/{{ APP }}/config:/etc/pihole:rw
       - /etc/localtime:/etc/localtime:ro

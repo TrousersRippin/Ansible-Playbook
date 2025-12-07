@@ -11,7 +11,7 @@ services:
       - TZ=Europe/Stockholm
       - PORT={{ PORT_NUMBER }}
     ports:
-      - {{ PORT_NUMBER }}:13378/tcp
+      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
       - /home/{{ USER }}/containers/storage/{{ APP }}/config:/config:rw
       - /home/{{ USER }}/containers/storage/{{ APP }}/metadata:/metadata:rw

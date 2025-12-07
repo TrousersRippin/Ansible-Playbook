@@ -10,7 +10,7 @@ services:
     env_file:
       - .env
     ports:
-      - {{ PORT_NUMBER }}:8000/tcp
+      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
       - /home/{{ USER }}/containers/storage/{{ APP }}/consume:/usr/src/{{ APP }}/consume:rw
       - /home/{{ USER }}/containers/storage/{{ APP }}/data:/usr/src/{{ APP }}/data:rw

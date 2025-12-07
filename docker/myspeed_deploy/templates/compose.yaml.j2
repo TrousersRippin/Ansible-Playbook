@@ -10,7 +10,7 @@ services:
     environment:
       - TZ=Europe/Stockholm
     ports:
-      - {{ PORT_NUMBER }}:5216/tcp
+      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
       - /home/{{ USER }}/containers/storage/{{ APP }}/config:/myspeed/data:rw
       - /etc/localtime:/etc/localtime:ro

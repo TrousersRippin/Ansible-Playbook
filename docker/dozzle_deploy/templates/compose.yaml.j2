@@ -10,7 +10,7 @@ services:
     env_file:
       - .env
     ports:
-      - {{ PORT_NUMBER }}:8008/tcp
+      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro

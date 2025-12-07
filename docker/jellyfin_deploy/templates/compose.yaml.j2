@@ -10,7 +10,7 @@ services:
     environment:
       - TZ=Europe/Stockholm
     ports:
-      - {{ PORT_NUMBER }}:8096/tcp
+      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     user: 1000:1000
     volumes:
       - /home/{{ USER }}/containers/storage/{{ APP }}:/cache:rw

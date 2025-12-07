@@ -10,7 +10,7 @@ services:
     env_file:
       - .env
     ports:
-      - {{ PORT_NUMBER }}:8001/tcp
+      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
       - /home/{{ USER }}/containers/storage/{{ APP }}/config:/app/data:rw
       - /etc/localtime:/etc/localtime:ro

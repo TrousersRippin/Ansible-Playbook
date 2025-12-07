@@ -10,7 +10,7 @@ services:
     env_file:
       - .env
     ports:
-      - {{ PORT_NUMBER }}:2342/tcp
+      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
       - /home/{{ USER }}/containers/storage/{{ APP }}:/photoprism/storage:rw
       - /etc/localtime:/etc/localtime:ro

@@ -12,7 +12,7 @@ services:
     command:
       - --path.rootfs=/host
     ports:
-      - {{ PORT_NUMBER }}:9100/tcp
+      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     pid: host
     volumes:
       - /:/host:ro,rslave

@@ -16,7 +16,7 @@ services:
       timeout: 10s
       retries: 5
     ports:
-      - {{ PORT_NUMBER }}:3306/tcp
+      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
       - {{ APP }}-data:/var/lib/mysql:rw
       - /etc/localtime:/etc/localtime:ro

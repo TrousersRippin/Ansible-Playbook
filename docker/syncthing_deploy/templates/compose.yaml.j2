@@ -12,10 +12,10 @@ services:
       - PUID=1000
       - PGID=1000
     ports:
-      - {{ PORT_NUMBER1 }}:8384/tcp
-      - {{ PORT_NUMBER2 }}:21027/udp
-      - {{ PORT_NUMBER3 }}:22000/tcp
-      - {{ PORT_NUMBER3 }}:22000/udp
+      - {{ PORT_NUMBER1 }}:{{ PORT_NUMBER1 }}/tcp
+      - {{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/udp
+      - {{ PORT_NUMBER3 }}:{{ PORT_NUMBER3 }}/tcp
+      - {{ PORT_NUMBER3 }}:{{ PORT_NUMBER3 }}/udp
     volumes:
       - /home/{{ USER }}/containers/storage/{{ APP }}:/var/syncthing:rw
       - /home/{{ USER }}:/var/syncthing/home:rw

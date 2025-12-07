@@ -12,7 +12,7 @@ services:
     command:
       - --config.file=/etc/{{ APP }}/{{ APP }}.yaml
     ports:
-      - {{ PORT_NUMBER }}:1514/tcp
+      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
       - /home/{{ USER }}/containers/storage/{{ APP }}/config/{{ APP }}.yaml:/etc/{{ APP }}/{{ APP }}.yaml:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
