@@ -5,8 +5,8 @@
       - distribution_release
       - architecture
 
-- name: Install Docker with APT
-  ansible.builtin.apt:
+- name: Install Docker
+  ansible.builtin.package:
     name: 
       - docker.io
       - docker-cli

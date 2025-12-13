@@ -13,6 +13,7 @@
   roles:
     - podman_install
     - firewalld_install
+    #- ufw_install
     #- alertmanager_deploy
     #- audiobookshelf_deploy
     #- bazarr_deploy
