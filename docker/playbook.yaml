@@ -23,6 +23,7 @@
     #- gitea_deploy
     #- gotify_deploy
     #- grafana_deploy
+    - homepage_deploy
     #- influxdb_deploy
     #- jellyfin_deploy
     #- jellyseerr_deploy

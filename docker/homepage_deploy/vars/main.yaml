@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: docker.io/gethomepage/homepage
+IMAGE_TAG: latest
+APP: homepage
+NETWORK: ansible
+PORT_NUMBER: 3000
+USER: troy

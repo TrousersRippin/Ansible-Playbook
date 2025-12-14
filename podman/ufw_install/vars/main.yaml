@@ -8,6 +8,7 @@ ufw_allowed_ports:
   #- { port: 2342, proto: tcp, comment: 'Photoprism' }
   #- { port: 2368, proto: tcp, comment: 'Ghost' }
   #- { port: 3000, proto: tcp, comment: 'Gitea' }
+  - { port: 3000, proto: tcp, comment: 'Homepage' }
   #- { port: 3001, proto: tcp, comment: 'Uptime-Kuma' }
   #- { port: 3100, proto: tcp, comment: 'Loki' }
   #- { port: 3306, proto: tcp, comment: 'MariaDB' }
