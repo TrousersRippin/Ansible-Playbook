@@ -3,7 +3,7 @@ firewalld_allowed_ports:
   #- 2342/tcp     # Photoprism
   #- 2368/tcp     # Ghost
   #- 3000/tcp     # Gitea
-  - 3000/tcp     # Homepage
+  #- 3000/tcp     # Homepage
   #- 3001/tcp     # Uptime-Kuma
   #- 3306/tcp     # MariaDB
   #- 3333/tcp     # Grafana
@@ -18,7 +18,7 @@ firewalld_allowed_ports:
   #- 7655/tcp     # Pulse
   #- 7878/tcp     # Radarr
   #- 8000/tcp     # Paperless-ngx
-  - 8001/tcp     # Gotify
+  #- 8001/tcp     # Gotify
   - 8005/tcp     # Filebrowser
   - 8008/tcp     # Dozzle
   #- 8096/tcp     # Jellyfin
