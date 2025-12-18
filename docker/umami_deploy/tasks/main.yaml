@@ -26,38 +26,6 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
-- name: Create a directory for app container consume storage
-  ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/consume"
-    state: directory
-    mode: '0777'
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-
-- name: Create a directory for app container data storage
-  ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/data"
-    state: directory
-    mode: '0777'
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-
-- name: Create a directory for app container export storage
-  ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/export"
-    state: directory
-    mode: '0777'
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-
-- name: Create a directory for app container media storage
-  ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/media"
-    state: directory
-    mode: '0777'
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-
 - name: Add compose file
   ansible.builtin.template:
     src: "templates/compose.yaml.j2"
@@ -80,19 +48,19 @@
     tag: "{{ IMAGE_TAG }}"
     source: pull
 
-- name: Wait for Redis to be running
+- name: Wait for PostgreSQL to be healthy
   community.docker.docker_container_info:
-    name: redis
-  register: redis_info
-  until: redis_info.exists and redis_info.container.State.Status == "running"
+    name: postgres
+  register: postgres_info
+  until: postgres_info.exists and postgres_info.container.State.Health.Status == "healthy"
   retries: 30
   delay: 10
   failed_when: false
 
-- name: Check if Redis is running
+- name: Check if PostgreSQL is healthy
   ansible.builtin.fail:
-    msg: "Redis container is not running. Cannot proceed with {{ APP }} deployment."
-  when: not redis_info.exists or redis_info.container.State.Status != "running"
+    msg: "PostgreSQL container is not healthy. Cannot proceed with {{ APP }} deployment."
+  when: not postgres_info.exists or postgres_info.container.State.Health.Status != "healthy"
 
 - name: Start Docker app
   community.docker.docker_compose_v2:

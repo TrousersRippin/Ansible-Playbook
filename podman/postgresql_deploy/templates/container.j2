@@ -1,8 +1,7 @@
 [Unit]
 Description={{ APP }}
 Wants=network-online.target
-After=network-online.target local-fs.target mariadb.service
-Requires=mariadb.service
+After=network-online.target local-fs.target
 
 [Container]
 ContainerName={{ APP }}
@@ -12,13 +11,11 @@ Timezone=local
 
 EnvironmentFile={{ APP }}.env
 
-User=0:0
-
 HostName={{ APP }}
 Network={{ NETWORK }}.network
 PublishPort={{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
 
-Volume=%h/containers/storage/{{ APP }}:/{{ APP }}/storage:rw,Z
+Volume={{ APP }}.volume:/var/lib/postgresql:rw,Z
 
 [Service]
 NoNewPrivileges=true

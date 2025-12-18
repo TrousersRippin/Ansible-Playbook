@@ -1,10 +1,13 @@
 ---
 firewalld_allowed_ports:
+  #- 1514/tcp     # Promtail
   #- 2342/tcp     # Photoprism
   #- 2368/tcp     # Ghost
   #- 3000/tcp     # Gitea
   #- 3000/tcp     # Homepage
   #- 3001/tcp     # Uptime-Kuma
+  #- 3100/tcp     # Loki
+  #- 3210/tcp     # Umami
   #- 3306/tcp     # MariaDB
   #- 3333/tcp     # Grafana
   #- 5000/tcp     # Kavita
@@ -12,6 +15,7 @@ firewalld_allowed_ports:
   #- 5055/tcp     # Overseerr
   #- 5216/tcp     # MySpeed
   #- 5230/tcp     # Memos
+  #- 5432/tcp     # PostgreSQL
   #- 5800/tcp     # MKVToolNix
   #- 6379/tcp     # Redis
   #- 6767/tcp     # Bazarr
@@ -21,7 +25,9 @@ firewalld_allowed_ports:
   #- 8001/tcp     # Gotify
   - 8005/tcp     # Filebrowser
   - 8008/tcp     # Dozzle
+  #- 8086/tcp     # InfluxDB
   #- 8096/tcp     # Jellyfin
+  #- 8125/tcp     # Telegraf
   #- 8181/tcp     # Tautulli
   #- 8384/tcp     # Syncthing
   #- 8877/tcp    # Vaultwarden
@@ -41,3 +47,8 @@ firewalld_allowed_ports:
   #- 51413/tcp    # Transmission
   #- 51413/udp    # Transmission
 firewalld_default_zone: home
+
+  
+  
+  
+  

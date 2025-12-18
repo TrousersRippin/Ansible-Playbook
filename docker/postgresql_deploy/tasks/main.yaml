@@ -48,19 +48,10 @@
     tag: "{{ IMAGE_TAG }}"
     source: pull
 
-- name: Wait for MariaDB to be healthy
-  community.docker.docker_container_info:
-    name: mariadb
-  register: mariadb_info
-  until: mariadb_info.exists and mariadb_info.container.State.Health.Status == "healthy"
-  retries: 30
-  delay: 10
-  failed_when: false
-
-- name: Check if MariaDB is healthy
-  ansible.builtin.fail:
-    msg: "MariaDB container is not healthy. Cannot proceed with {{ APP }} deployment."
-  when: not mariadb_info.exists or mariadb_info.container.State.Health.Status != "healthy"
+- name: Ensure Docker volume exists
+  community.docker.docker_volume:
+    name: "{{ APP }}-data"
+    state: present
 
 - name: Start Docker app
   community.docker.docker_compose_v2:
