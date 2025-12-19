@@ -5,7 +5,7 @@ firewalld_allowed_ports:
   #- 3000/tcp     # Gitea
   #- 3000/tcp     # Homepage
   #- 3001/tcp     # Uptime-Kuma
-  - 3210/tcp     # Umami
+  #- 3210/tcp     # Umami
   #- 3306/tcp     # MariaDB
   #- 3333/tcp     # Grafana
   #- 5000/tcp     # Kavita
@@ -13,7 +13,7 @@ firewalld_allowed_ports:
   #- 5055/tcp     # Overseerr
   #- 5216/tcp     # MySpeed
   #- 5230/tcp     # Memos
-  - 5432/tcp     # PostgreSQL
+  #- 5432/tcp     # PostgreSQL
   #- 5800/tcp     # MKVToolNix
   #- 6379/tcp     # Redis
   #- 6767/tcp     # Bazarr

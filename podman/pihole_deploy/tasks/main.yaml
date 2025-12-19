@@ -10,15 +10,7 @@
     state: started
     enabled: true
 
-- name: Create a directory for app container settings storage
-  ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/config"
-    state: directory
-    mode: '0755'
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-
-- name: Create a directory for app systemd file
+- name: Create a directory for systemd file
   ansible.builtin.file:
     path: "/home/{{ USER }}/.config/containers/systemd/{{ APP }}"
     state: directory
@@ -26,7 +18,15 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
-- name: Add container systemd file
+- name: Create a directory for container config storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/config"
+    state: directory
+    mode: '0755'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Add container file
   ansible.builtin.template:
     src: "templates/container.j2"
     dest: "/home/{{ USER }}/.config/containers/systemd/{{ APP }}/{{ APP }}.container"
@@ -34,13 +34,24 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
-- name: Add container systemd file
+- name: Add env file
   ansible.builtin.template:
     src: "templates/env.j2"
     dest: "/home/{{ USER }}/.config/containers/systemd/{{ APP }}/{{ APP }}.env"
     mode: '0644'
     owner: "{{ USER }}"
     group: "{{ USER }}"
+
+- name: Allow rootless containers to bind port 53
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/20-user_priv_ports.conf
+    content: "net.ipv4.ip_unprivileged_port_start=53\n"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Reload sysctl
+  ansible.builtin.command: sysctl --system
 
 - name: Check if image exists
   ansible.builtin.command: >
@@ -50,7 +61,7 @@
   register: image_check
   failed_when: false
 
-- name: Pull container image if missing
+- name: Pull image if missing
   ansible.builtin.command: >
     podman pull {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
   become: true

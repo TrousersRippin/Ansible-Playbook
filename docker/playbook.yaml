@@ -54,4 +54,4 @@
     #- mariadb_deploy
     #- photoprism_deploy
     #- postgresql_deploy
-    £- umami_deploy
+    #- umami_deploy

@@ -34,13 +34,13 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
-- name: Ensure Docker image is present
+- name: Check if image exists
   community.docker.docker_image:
     name: "{{ IMAGE_NAME }}"
     tag: "{{ IMAGE_TAG }}"
     source: pull
 
-- name: Start Docker app
+- name: Start container
   community.docker.docker_compose_v2:
     project_src: "/home/{{ USER }}/.config/compose/{{ APP }}"
     state: present

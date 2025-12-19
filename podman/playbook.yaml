@@ -18,7 +18,7 @@
     #- audiobookshelf_deploy
     #- bazarr_deploy
     - dozzle_deploy
-    #- filebrowser_deploy
+    - filebrowser_deploy
     #- ghost_deploy
     #- gitea_deploy
     #- gotify_deploy
@@ -49,5 +49,5 @@
     #- paperless-ngx_deploy
     #- mariadb_deploy
     #- photoprism_deploy
-    - postgresql_deploy
-    - umami_deploy
+    #- postgresql_deploy
+    #- umami_deploy

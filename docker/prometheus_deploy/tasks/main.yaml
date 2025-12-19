@@ -18,7 +18,7 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
-- name: Create a directory for app container storage
+- name: Create a directory for container config storage
   ansible.builtin.file:
     path: "/home/{{ USER }}/containers/storage/{{ APP }}/config"
     state: directory
@@ -26,7 +26,7 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
-- name: Add alerts.yaml
+- name: Add alerts file
   ansible.builtin.copy:
     src: "files/alerts.yaml"
     dest: "/home/{{ USER }}/containers/storage/{{ APP }}/config/alerts.yaml"
@@ -34,7 +34,7 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
-- name: Add prometheus.yaml
+- name: Add config file
   ansible.builtin.copy:
     src: "files/prometheus.yaml"
     dest: "/home/{{ USER }}/containers/storage/{{ APP }}/config/{{ APP }}.yaml"
@@ -50,7 +50,7 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
-- name: Ensure Docker image is present
+- name: Check if image exists
   community.docker.docker_image:
     name: "{{ IMAGE_NAME }}"
     tag: "{{ IMAGE_TAG }}"
@@ -61,7 +61,7 @@
     name: "{{ APP }}-data"
     state: present
 
-- name: Start Docker app
+- name: Start container
   community.docker.docker_compose_v2:
     project_src: "/home/{{ USER }}/.config/compose/{{ APP }}"
     state: present

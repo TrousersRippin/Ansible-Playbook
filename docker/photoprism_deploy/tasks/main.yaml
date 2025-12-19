@@ -18,7 +18,7 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
-- name: Create a directory for app container storage
+- name: Create a directory for container storage
   ansible.builtin.file:
     path: "/home/{{ USER }}/containers/storage/{{ APP }}"
     state: directory
@@ -42,7 +42,7 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
-- name: Ensure Docker image is present
+- name: Check if image exists
   community.docker.docker_image:
     name: "{{ IMAGE_NAME }}"
     tag: "{{ IMAGE_TAG }}"
@@ -62,7 +62,7 @@
     msg: "MariaDB container is not healthy. Cannot proceed with {{ APP }} deployment."
   when: not mariadb_info.exists or mariadb_info.container.State.Health.Status != "healthy"
 
-- name: Start Docker app
+- name: Start container
   community.docker.docker_compose_v2:
     project_src: "/home/{{ USER }}/.config/compose/{{ APP }}"
     state: present
