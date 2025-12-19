@@ -14,6 +14,22 @@
     state: present
     update_cache: true
 
+- name: Create a directory for compose files
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/.config/compose/"
+    state: directory
+    mode: '0755'
+    owner: '{{ USER }}'
+    group: '{{ USER }}'
+
+- name: Create a directory for container storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/"
+    state: directory
+    mode: '0755'
+    owner: '{{ USER }}'
+    group: '{{ USER }}'
+
 - name: Add user to Docker group
   ansible.builtin.user:
     name: "{{ USER }}"

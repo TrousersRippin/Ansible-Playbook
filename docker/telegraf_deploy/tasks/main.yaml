@@ -34,6 +34,15 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
+- name: Get Docker group GID
+  command: getent group docker
+  register: docker_group
+  changed_when: false
+
+- name: Set docker_gid fact
+  set_fact:
+    docker_gid: "{{ docker_group.stdout.split(':')[2] }}"
+
 - name: Add compose file
   ansible.builtin.template:
     src: "templates/compose.yaml.j2"
@@ -55,15 +64,6 @@
     name: "{{ IMAGE_NAME }}"
     tag: "{{ IMAGE_TAG }}"
     source: pull
-
-- name: Get Docker group GID
-  command: getent group docker
-  register: docker_group
-  changed_when: false
-
-- name: Set docker_gid fact
-  set_fact:
-    docker_gid: "{{ docker_group.stdout.split(':')[2] }}"
 
 - name: Start container
   community.docker.docker_compose_v2:
