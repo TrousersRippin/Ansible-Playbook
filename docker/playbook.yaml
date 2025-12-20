@@ -12,7 +12,7 @@
   become: true
   roles:
     - docker_install
-    #- ufw_install
+    - ufw_install
     #- firewalld_install
     #- alertmanager_deploy
     #- audiobookshelf_deploy
