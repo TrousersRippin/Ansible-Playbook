@@ -20,9 +20,9 @@ AddCapability=CHOWN
 
 HostName={{ APP }}
 Network={{ NETWORK }}.network
-PublishPort={{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
 PublishPort={{ PORT_NUMBER1 }}:{{ PORT_NUMBER1 }}/tcp
-PublishPort={{ PORT_NUMBER1 }}:{{ PORT_NUMBER1 }}/udp
+PublishPort={{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/tcp
+PublishPort={{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/udp
 
 Volume=%h/containers/storage/{{ APP }}/config:/etc/{{ APP }}:rw,Z
 

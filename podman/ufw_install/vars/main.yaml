@@ -18,6 +18,7 @@ ufw_allowed_ports:
   #- { port: 5055, proto: tcp, comment: 'Overseerr' }
   #- { port: 5216, proto: tcp, comment: 'MySpeed' }
   #- { port: 5230, proto: tcp, comment: 'Memos' }
+  #- { port: 5380, proto: tcp, comment: 'Technitium' }
   #- { port: 5432, proto: tcp, comment: 'PostgreSQL' }
   #- { port: 5800, proto: tcp, comment: 'MKVToolNix' }
   #- { port: 6379, proto: tcp, comment: 'Redis' }
@@ -46,3 +47,4 @@ ufw_allowed_ports:
   #- { port: 44322, proto: tcp, comment: 'PMProxy' }
   #- { port: 51413, proto: tcp, comment: 'Transmission' }
   #- { port: 51413, proto: udp, comment: 'Transmission' }
+  #- { port: 53443, proto: tcp, comment: 'Technitium' }

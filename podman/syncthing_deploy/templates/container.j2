@@ -13,10 +13,10 @@ UserNS=keep-id:uid={{ ANSIBLE_USER_ID }},gid={{ ANSIBLE_USER_ID }}
 
 HostName={{ APP }}
 Network={{ NETWORK }}.network
-PublishPort={{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
 PublishPort={{ PORT_NUMBER1 }}:{{ PORT_NUMBER1 }}/tcp
 PublishPort={{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/tcp
-PublishPort={{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/udp
+PublishPort={{ PORT_NUMBER3 }}:{{ PORT_NUMBER2 }}/tcp
+PublishPort={{ PORT_NUMBER3 }}:{{ PORT_NUMBER3 }}/udp
 
 Volume=%h/containers/storage/{{ APP }}:/var/{{ APP }}:rw,Z
 Volume=%h:/var/{{ APP }}/home:rw,Z

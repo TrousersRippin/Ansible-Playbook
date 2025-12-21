@@ -44,6 +44,7 @@
     #- sonarr_deploy
     #- syncthing_deploy
     #- tautulli_deploy
+    #- technitium_deploy
     #- telegraf_deploy
     #- transmission_deploy
     #- uptime-kuma_deploy
