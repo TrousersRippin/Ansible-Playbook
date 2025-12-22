@@ -1,39 +1,29 @@
 {
-  "__inputs": [
-    {
-      "name": "InfluxDB",
-      "label": "InfluxDB",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    }
-  ],
   "__elements": {},
   "__requires": [
     {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": ""
+      "version": "9.0.0"
     },
     {
       "type": "datasource",
       "id": "influxdb",
       "name": "InfluxDB",
-      "version": ""
+      "version": "1.0.0"
     },
     {
       "type": "panel",
       "id": "stat",
       "name": "Stat",
-      "version": ""
+      "version": "1.0.0"
     },
     {
       "type": "panel",
       "id": "timeseries",
       "name": "Time series",
-      "version": ""
+      "version": "1.0.0"
     }
   ],
   "annotations": {
@@ -58,7 +48,7 @@
       }
     ]
   },
-  "description": "InfluxDB Dashboard",
+  "description": "Docker Dashboard",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -73,7 +63,6 @@
       "url": "https://grafana.com/grafana/dashboards/17020"
     }
   ],
-  "liveNow": true,
   "panels": [
     {
       "datasource": {
@@ -123,7 +112,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -185,7 +174,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -250,7 +239,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -311,7 +300,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -373,7 +362,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -435,7 +424,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -532,7 +521,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -629,7 +618,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -726,7 +715,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -823,7 +812,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -838,10 +827,14 @@
       "type": "timeseries"
     }
   ],
-  "preload": true,
+  "preload": false,
   "refresh": "1m",
   "schemaVersion": 42,
-  "tags": [],
+  "tags": [
+        "influxdb",
+        "telegraf",
+        "docker"
+    ],
   "templating": {
     "list": [
       {
@@ -905,7 +898,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "InfluxDB",
+  "title": "Docker",
   "uid": "d1234567890",
   "version": 1,
   "weekStart": ""
