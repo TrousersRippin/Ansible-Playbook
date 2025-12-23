@@ -1,14 +1,8 @@
 ---
 virtual_machines:
   hosts:
-    debian:
-      ansible_host: 192.168.23.100
+    fedora:
+      ansible_host: 192.168.23.102
       ansible_become: true
       ansible_become_method: sudo
-      ansible_python_interpreter: /usr/bin/python3.13
-
-#    ubuntu:
-#      ansible_host: 192.168.23.101
-#      ansible_become: true
-#      ansible_become_method: sudo
-#      ansible_python_interpreter: /usr/bin/python3.13
+      ansible_python_interpreter: /usr/bin/python3.14

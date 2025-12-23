@@ -4,10 +4,10 @@ firewalld_allowed_ports:
   #- 2368/tcp     # Ghost
   #- 3000/tcp     # Gitea
   #- 3000/tcp     # Homepage
-  #- 3001/tcp     # Uptime-Kuma
+  - 3001/tcp     # Uptime-Kuma
   #- 3210/tcp     # Umami
   #- 3306/tcp     # MariaDB
-  #- 3333/tcp     # Grafana
+  - 3333/tcp     # Grafana
   #- 5000/tcp     # Kavita
   #- 5055/tcp     # Jellyseerr
   #- 5055/tcp     # Overseerr
@@ -29,12 +29,12 @@ firewalld_allowed_ports:
   #- 8384/tcp     # Syncthing
   #- 8877/tcp     # Vaultwarden
   #- 8989/tcp     # Sonarr
-  #- 9092/tcp     # Prometheus
+  - 9092/tcp     # Prometheus
   #- 9091/tcp     # Transmission
-  #- 9093/tcp     # Alertmanager
-  #- 9100/tcp     # Node-Exporter
+  - 9093/tcp     # Alertmanager
+  - 9100/tcp     # Node-Exporter
   #- 9696/tcp     # Prowlarr
-  #- 9882/tcp     # Prometheus-Podman-Exporter
+  - 9882/tcp     # Prometheus-Podman-Exporter
   #- 13378/tcp    # Audiobookshelf
   #- 21027/udp    # Syncthing
   #- 22000/tcp    # Syncthing
