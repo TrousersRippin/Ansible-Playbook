@@ -7,10 +7,11 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    environment:
-      - TZ=Europe/Stockholm
+    env_file:
+      - .env
     command:
       - --config.file=/etc/{{ APP }}/{{ APP }}.yaml
+    user: "${UID}:{{ docker_gid }}"
     ports:
       - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:

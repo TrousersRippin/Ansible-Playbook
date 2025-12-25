@@ -10,12 +10,18 @@ services:
     environment:
       - TZ=Europe/Stockholm
     command:
-      - --path.rootfs=/host
+      - --path.procfs=/host/proc
+      - --path.rootfs=/rootfs
+      - --path.sysfs=/host/sys
+      - --collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)
+    user: {{ NOBODY }}:{{ NOBODY }}
     ports:
       - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     pid: host
     volumes:
-      - /:/host:ro,rslave
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
       - {{ NETWORK }}

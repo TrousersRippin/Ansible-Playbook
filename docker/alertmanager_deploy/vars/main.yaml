@@ -5,3 +5,4 @@ APP: alertmanager
 NETWORKNAME: ansible
 PORT_NUMBER: 9093
 USER: troy
+NOBODY: 65534

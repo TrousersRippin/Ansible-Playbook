@@ -12,12 +12,13 @@ services:
     command:
       - --config.file=/etc/{{ APP }}/{{ APP }}.yaml
       - --web.enable-lifecycle
+    user: {{ NOBODY }}:{{ NOBODY }}
     ports:
       - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
       - /home/{{ USER }}/containers/storage/{{ APP }}/config/{{ APP }}.yaml:/etc/{{ APP }}/{{ APP }}.yaml:ro
       - /home/{{ USER }}/containers/storage/{{ APP }}/config/alerts.yaml:/etc/{{ APP }}/alerts.yaml:ro
-      - {{ APP }}-data:/prometheus:rw
+      - /home/{{ USER }}/containers/storage/{{ APP }}/:/prometheus:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - {{ NETWORK }}
@@ -25,10 +26,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-
-volumes:
-  {{ APP }}-data:
-    external: true
 
 networks:
   {{ NETWORK }}:

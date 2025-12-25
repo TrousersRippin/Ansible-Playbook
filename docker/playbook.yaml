@@ -15,6 +15,8 @@
     - ufw_install
     #- firewalld_install
     - alertmanager_deploy
+    - node-exporter_deploy
+    - prometheus_deploy
     #- audiobookshelf_deploy
     #- bazarr_deploy
     - dozzle_deploy
@@ -22,22 +24,21 @@
     #- ghost_deploy
     #- gitea_deploy
     #- gotify_deploy
-    - grafana_deploy
     #- homepage_deploy
+    - telegraf_deploy
     - influxdb_deploy
     #- jellyfin_deploy
     #- jellyseerr_deploy
     #- kavita_deploy
+    - promtail_deploy
     - loki_deploy
+    - grafana_deploy
     #- memos_deploy
     #- mkvtoolnix_deploy
     #- myspeed_deploy
-    - node-exporter_deploy
     #- overseerr_deploy
     #- pihole_deploy
     #- plex_deploy
-    - prometheus_deploy
-    - promtail_deploy
     #- prowlarr_deploy
     #- pulse_deploy
     #- radarr_deploy
@@ -45,9 +46,8 @@
     #- syncthing_deploy
     #- tautulli_deploy
     #- technitium_deploy
-    - telegraf_deploy
     #- transmission_deploy
-    - uptime-kuma_deploy
+    #- uptime-kuma_deploy
     #- vaultwarden_deploy
     #- watchtower_deploy
     #- redis_deploy

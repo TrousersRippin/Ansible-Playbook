@@ -5,3 +5,4 @@ APP: prometheus
 NETWORKNAME: ansible
 PORT_NUMBER: 9090
 USER: troy
+NOBODY: 65534

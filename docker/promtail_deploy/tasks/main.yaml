@@ -34,10 +34,27 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
+- name: Get Docker group GID
+  command: getent group docker
+  register: docker_group
+  changed_when: false
+
+- name: Set docker_gid fact
+  set_fact:
+    docker_gid: "{{ docker_group.stdout.split(':')[2] }}"
+
 - name: Add compose file
   ansible.builtin.template:
     src: "templates/compose.yaml.j2"
     dest: "/home/{{ USER }}/.config/compose/{{ APP }}/compose.yaml"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Add env file
+  ansible.builtin.template:
+    src: "templates/env.j2"
+    dest: "/home/{{ USER }}/.config/compose/{{ APP }}/.env"
     mode: '0644'
     owner: "{{ USER }}"
     group: "{{ USER }}"

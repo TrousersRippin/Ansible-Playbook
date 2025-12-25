@@ -23,8 +23,8 @@ firewalld_allowed_ports:
   #- 7878/tcp     # Radarr
   #- 8000/tcp     # Paperless-ngx
   #- 8001/tcp     # Gotify
-  #- 8005/tcp     # Filebrowser
-  #- 8008/tcp     # Dozzle
+  - 8005/tcp     # Filebrowser
+  - 8008/tcp     # Dozzle
   #- 8086/tcp     # InfluxDB
   #- 8096/tcp     # Jellyfin
   #- 8125/tcp     # Telegraf

@@ -9,11 +9,12 @@ services:
       - no-new-privileges:true
     env_file:
       - .env
+    user: ${UID:-1000}:${GID:-1000}
     ports:
       - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
       - /home/{{ USER }}/containers/storage/{{ APP }}/config:/etc/influxdb2:rw
-      - {{ APP }}-data:/var/lib/influxdb2:rw
+      - /home/{{ USER }}/containers/storage/{{ APP }}/data:/var/lib/influxdb2:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - {{ NETWORK }}
@@ -21,10 +22,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-
-volumes:
-  {{ APP }}-data:
-    external: true
 
 networks:
   {{ NETWORK }}:
