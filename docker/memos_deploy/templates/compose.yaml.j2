@@ -9,6 +9,7 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
+    user: ${UID:-1000}:${GID:-1000}
     ports:
       - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:

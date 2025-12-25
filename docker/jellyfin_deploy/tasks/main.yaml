@@ -18,6 +18,14 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
+- name: Create a directory for container cache storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/cache"
+    state: directory
+    mode: '0755'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
 - name: Create a directory for container config storage
   ansible.builtin.file:
     path: "/home/{{ USER }}/containers/storage/{{ APP }}/config"

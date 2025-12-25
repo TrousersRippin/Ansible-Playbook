@@ -18,9 +18,9 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
-- name: Create a directory for container storage
+- name: Create a directory for container config storage
   ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}"
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/config"
     state: directory
     mode: '0755'
     owner: "{{ USER }}"

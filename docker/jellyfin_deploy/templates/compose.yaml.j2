@@ -9,12 +9,12 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
+    user: ${UID:-1000}:${GID:-1000}
     ports:
       - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
-    user: 1000:1000
     volumes:
-      - /home/{{ USER }}/containers/storage/{{ APP }}:/cache:rw
-      - /home/{{ USER }}/containers/storage/{{ APP }}:/config:rw
+      - /home/{{ USER }}/containers/storage/{{ APP }}/cache:/cache:rw
+      - /home/{{ USER }}/containers/storage/{{ APP }}/config:/config:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - {{ NETWORK }}
