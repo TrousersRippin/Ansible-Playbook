@@ -15,7 +15,7 @@
     #- ufw_install
     #- firewalld_install
     - dozzle_deploy
-    #- filebrowser_deploy
+    - filebrowser_deploy
     #- alertmanager_deploy
     #- node-exporter_deploy
     #- prometheus_deploy
@@ -38,7 +38,7 @@
     #- myspeed_deploy
     #- overseerr_deploy
     #- pihole_deploy
-    - plex_deploy
+    #- plex_deploy
     #- prowlarr_deploy
     #- pulse_deploy
     #- radarr_deploy
