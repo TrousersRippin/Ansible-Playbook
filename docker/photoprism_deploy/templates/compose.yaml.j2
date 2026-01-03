@@ -1,0 +1,22 @@
+---
+services:
+  {{ APP }}:
+    image: {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+    container_name: {{ APP }}
+    hostname: {{ APP }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    ports:
+      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
+    volumes:
+      - /home/{{ USER }}/containers/storage/{{ APP }}:/photoprism/storage:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - {{ NETWORK }}
+
+networks:
+  {{ NETWORK }}:
+    external: true

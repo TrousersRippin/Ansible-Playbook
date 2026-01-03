@@ -1,0 +1,41 @@
+{
+  "url": "https://blog.domain.com",
+  "server": {
+      "port": 2368,
+      "host": "0.0.0.0"
+    },
+
+  "database": {
+    "client": "sqlite3",
+    "connection": {
+      "filename": "content/data/ghost.db"},
+    "useNullAsDefault": true,
+    "debug": false
+    },
+
+  "mail": {
+    "from": "ansible@icloud.com",
+    "transport": "SMTP",
+    "options": {
+      "host": "smtp.mail.me.com",
+      "port": 587,
+      "auth": {
+        "user": "ansible@icloud.com",
+        "pass": "abcd-efgh-ijcl-mnop"}
+        }
+    },
+
+  "imageOptimization": {
+    "resize": false
+    },
+
+  "logging": {
+    "useLocalTime": true,
+    "transports": ["stdout", "file"]
+    },
+
+  "process": "systemd",
+  "paths": {
+      "contentPath": "/var/lib/ghost/content"
+    }
+}

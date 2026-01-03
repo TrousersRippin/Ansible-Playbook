@@ -1,0 +1,28 @@
+---
+services:
+  {{ APP }}:
+    image: {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+    container_name: {{ APP }}
+    hostname: {{ APP }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
+    ports:
+      - {{ PORT_NUMBER1 }}:{{ PORT_NUMBER1 }}/tcp
+      - {{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/udp
+      - {{ PORT_NUMBER3 }}:{{ PORT_NUMBER3 }}/tcp
+      - {{ PORT_NUMBER3 }}:{{ PORT_NUMBER3 }}/udp
+    volumes:
+      - /home/{{ USER }}/containers/storage/{{ APP }}:/var/syncthing:rw
+      - /home/{{ USER }}:/var/syncthing/home:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - {{ NETWORK }}
+
+networks:
+  {{ NETWORK }}:
+    external: true

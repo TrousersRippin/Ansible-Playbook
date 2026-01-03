@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: docker.io/fallenbagel/jellyseerr
+IMAGE_TAG: latest
+APP: jellyseerr
+NETWORKNAME: ansible
+PORT_NUMBER: 5055
+USER: troy
+ANSIBLE_USER_ID: 1000

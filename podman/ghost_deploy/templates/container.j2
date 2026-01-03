@@ -1,0 +1,29 @@
+[Unit]
+Description={{ APP }}
+Wants=network-online.target
+After=network-online.target local-fs.target
+
+[Container]
+ContainerName={{ APP }}
+Image={{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+AutoUpdate=registry
+Timezone=local
+
+UserNS=keep-id:uid={{ ANSIBLE_USER_ID }},gid={{ ANSIBLE_USER_ID }}
+
+HostName={{ APP }}
+Network={{ NETWORK }}.network
+PublishPort={{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
+
+Volume=%h/containers/storage/{{ APP }}/config/config.production.json:/var/lib/ghost/config.production.json:ro,Z
+Volume=%h/containers/storage/{{ APP }}/config:/var/lib/ghost/content:rw,Z
+
+[Service]
+NoNewPrivileges=true
+Restart=on-failure
+TimeoutStartSec=300
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target default.target

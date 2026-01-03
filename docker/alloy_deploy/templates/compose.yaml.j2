@@ -1,0 +1,41 @@
+---
+services:
+  {{ APP }}:
+    image: {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+    container_name: {{ APP }}
+    hostname: {{ HOSTNAME }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    command:
+      - run 
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
+      - /etc/alloy/config.alloy
+    ports:
+      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
+    pid: host
+    volumes:
+      - /home/{{ USER }}/containers/storage/{{ APP }}/config/config.alloy:/etc/{{ APP }}/config.alloy:ro
+      - /home/{{ USER }}/containers/storage/{{ APP }}/data:/var/lib/{{ APP }}/data:rw
+      - {{ APP }}-data:/var/lib/{{ APP }}/data:rw
+      - /:/rootfs:ro
+      - /run:/run:ro
+      - /run/udev/data:/run/udev/data:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/log:/var/log:ro
+      - /var/log/journal:/var/log/journal:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - {{ NETWORK }}
+
+volumes:
+  {{ APP }}-data:
+    external: true
+
+networks:
+  {{ NETWORK }}:
+    external: true

@@ -1,0 +1,32 @@
+---
+- name: Ensure firewalld is installed
+  package:
+    name: firewalld
+    state: present
+
+- name: Ensure firewalld service is running and enabled
+  service:
+    name: firewalld
+    state: started
+    enabled: true
+
+- name: Set default zone
+  command: firewall-cmd --set-default-zone={{ firewalld_default_zone }}
+  become: true
+  notify: Reload firewalld
+
+- name: Allow defined ports in default zone
+  firewalld:
+    port: "{{ item }}"
+    zone: "{{ firewalld_default_zone }}"
+    permanent: true
+    state: enabled
+  loop: "{{ firewalld_allowed_ports }}"
+  notify: Reload firewalld
+
+- name: Set default zone target to DROP (deny incoming by default)
+  firewalld:
+    zone: "{{ firewalld_default_zone }}"
+    rich_rule: 'rule family="ipv4" source address="0.0.0.0/0" reject'
+    state: enabled
+  notify: Reload firewalld

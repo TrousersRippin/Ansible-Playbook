@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: ghcr.io/getwud/wud
+IMAGE_TAG: latest
+APP: wud
+NETWORK: ansible
+PORT_NUMBER: 3322
+USER: troy

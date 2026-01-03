@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: docker.io/neosmemo/memos
+IMAGE_TAG: latest
+APP: memos
+NETWORKNAME: ansible
+PORT_NUMBER: 5230
+USER: troy
+ANSIBLE_USER_ID: 1000

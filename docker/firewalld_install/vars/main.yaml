@@ -1,0 +1,53 @@
+---
+firewalld_allowed_ports:
+  #- 2342/tcp     # Photoprism
+  #- 2368/tcp     # Ghost
+  #- 3000/tcp     # Gitea
+  #- 3000/tcp     # Homepage
+  #- 3001/tcp     # Uptime-Kuma
+  #- 3100/tcp     # Loki
+  #- 3210/tcp     # Umami
+  #- 3306/tcp     # MariaDB
+  #- 3322/tcp     # Whatsupdocker
+  #- 3333/tcp     # Grafana
+  #- 5000/tcp     # Kavita
+  #- 5055/tcp     # Jellyseerr
+  #- 5055/tcp     # Overseerr
+  #- 5216/tcp     # MySpeed
+  #- 5230/tcp     # Memos
+  #- 5432/tcp     # PostgreSQL
+  #- 5800/tcp     # MKVToolNix
+  #- 6379/tcp     # Redis
+  #- 6767/tcp     # Bazarr
+  #- 7655/tcp     # Pulse
+  #- 7878/tcp     # Radarr
+  #- 8000/tcp     # Paperless-ngx
+  #- 8001/tcp     # Gotify
+  #- 8005/tcp     # Filebrowser
+  #- 8008/tcp     # Dozzle
+  #- 8086/tcp     # InfluxDB
+  #- 8096/tcp     # Jellyfin
+  #- 8125/tcp     # Telegraf
+  #- 8181/tcp     # Tautulli
+  #- 8384/tcp     # Syncthing
+  #- 8877/tcp     # Vaultwarden
+  #- 8989/tcp     # Sonarr
+  #- 9092/tcp     # Prometheus
+  #- 9091/tcp     # Transmission
+  #- 9093/tcp     # Alertmanager
+  #- 9696/tcp     # Prowlarr
+  #- 13378/tcp    # Audiobookshelf
+  #- 12345/tcp    # Alloy
+  #- 21027/udp    # Syncthing
+  #- 22000/tcp    # Syncthing
+  #- 22000/udp    # Syncthing
+  #- 32400/tcp    # Plex
+  #- 44322/tcp    # PMProxy
+  #- 51413/tcp    # Transmission
+  #- 51413/udp    # Transmission
+firewalld_default_zone: home
+
+  
+  
+  
+  

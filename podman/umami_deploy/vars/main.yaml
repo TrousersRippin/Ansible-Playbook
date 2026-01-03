@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: docker.io/umamisoftware/umami
+IMAGE_TAG: latest
+APP: umami
+NETWORK: ansible
+PORT_NUMBER: 3210
+USER: troy
+ANSIBLE_USER_ID: 1000

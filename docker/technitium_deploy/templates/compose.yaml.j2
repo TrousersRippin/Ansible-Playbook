@@ -1,0 +1,25 @@
+---
+services:
+  {{ APP }}:
+    image: {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+    container_name: {{ APP }}
+    hostname: {{ APP }}
+    restart: unless-stopped
+    sysctls:
+      - net.ipv4.ip_local_port_range=1024 65000
+    env_file:
+      - .env
+    ports:
+      - {{ PORT_NUMBER1 }}:{{ PORT_NUMBER1 }}/tcp
+      - {{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/tcp
+      - {{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/udp
+      - {{ PORT_NUMBER3 }}:{{ PORT_NUMBER3 }}/tcp
+    volumes:
+      - /home/{{ USER }}/containers/storage/{{ APP }}/config:/etc/dns:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - {{ NETWORK }}
+
+networks:
+  {{ NETWORK }}:
+    external: true

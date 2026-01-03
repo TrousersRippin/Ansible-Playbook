@@ -1,0 +1,33 @@
+---
+services:
+  {{ APP }}:
+    image: {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+    container_name: {{ APP }}
+    hostname: {{ APP }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    command:
+      - --config.file=/etc/{{ APP }}/{{ APP }}.yaml
+      - --web.enable-remote-write-receiver
+      - --web.enable-lifecycle
+    user: {{ NOBODY }}:{{ NOBODY }}
+    ports:
+      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
+    volumes:
+      - /home/{{ USER }}/containers/storage/{{ APP }}/config/{{ APP }}.yaml:/etc/{{ APP }}/{{ APP }}.yaml:ro
+      - /home/{{ USER }}/containers/storage/{{ APP }}/config/alerts.yaml:/etc/{{ APP }}/alerts.yaml:ro
+      - {{ APP }}-data:/{{ APP }}:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - {{ NETWORK }}
+
+volumes:
+  {{ APP }}-data:
+    external: true
+
+networks:
+  {{ NETWORK }}:
+    external: true

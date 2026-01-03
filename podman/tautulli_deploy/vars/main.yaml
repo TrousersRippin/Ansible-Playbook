@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: docker.io/tautulli/tautulli
+IMAGE_TAG: latest
+APP: tautulli
+NETWORK: ansible
+PORT_NUMBER: 8181
+USER: troy
+ANSIBLE_USER_ID: 1000

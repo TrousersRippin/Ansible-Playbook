@@ -1,0 +1,160 @@
+---
+- name: Ensure Podman is installed
+  ansible.builtin.package:
+    name: podman
+    state: present
+
+- name: Ensure Podman service is running
+  ansible.builtin.service:
+    name: podman
+    state: started
+    enabled: true
+
+- name: Create a directory for systemd file
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/.config/containers/systemd/{{ APP }}"
+    state: directory
+    mode: '0777'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Create a directory for container config storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/config"
+    state: directory
+    mode: '0777'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Create a directory for container dashboard storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/dashboards"
+    state: directory
+    mode: '0777'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Create a directory for container data storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/data"
+    state: directory
+    mode: '0777'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Create a directory for container provisioning storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning"
+    state: directory
+    mode: '0777'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Create a directory for container provisioning-alerting storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/alerting"
+    state: directory
+    mode: '0777'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Create a directory for container provisioning-dashboards storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/dashboards"
+    state: directory
+    mode: '0777'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Create a directory for container provisioning-datasources storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/datasources"
+    state: directory
+    mode: '0777'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Create a directory for container provisioning-plugins storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/plugins"
+    state: directory
+    mode: '0777'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Add config file
+  ansible.builtin.copy:
+    src: "files/grafana.ini"
+    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/config/grafana.ini"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Add dashboards config file
+  ansible.builtin.copy:
+    src: "files/dashboards.yaml"
+    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/dashboards/dashboards.yaml"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Add datasources config file
+  ansible.builtin.copy:
+    src: "files/datasources.yaml"
+    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/datasources/datasources.yaml"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Add node-exporter dashboard file
+  ansible.builtin.copy:
+    src: "files/node-exporter.json"
+    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/dashboards/node-exporter.json"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Add podman-exporter dashboard file
+  ansible.builtin.copy:
+    src: "files/podman-exporter.json"
+    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/dashboards/podman-exporter.json"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Add container file
+  ansible.builtin.template:
+    src: "templates/container.j2"
+    dest: "/home/{{ USER }}/.config/containers/systemd/{{ APP }}/{{ APP }}.container"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Check if image exists
+  ansible.builtin.command: >
+    podman image exists {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+  become: true
+  become_user: "{{ USER }}"
+  register: image_check
+  failed_when: false
+
+- name: Pull image if missing
+  ansible.builtin.command: >
+    podman pull {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+  become: true
+  become_user: "{{ USER }}"
+  when: image_check.rc != 0
+
+- name: Reload systemd daemon
+  ansible.builtin.command: systemctl --user daemon-reload
+  become: true
+  become_user: "{{ USER }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ ANSIBLE_USER_ID }}"
+
+- name: Start container
+  ansible.builtin.command: systemctl --user start {{ APP }}
+  become: true
+  become_user: "{{ USER }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ ANSIBLE_USER_ID }}"

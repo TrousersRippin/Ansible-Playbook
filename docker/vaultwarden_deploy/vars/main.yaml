@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: docker.io/vaultwarden/server
+IMAGE_TAG: latest
+APP: vaultwarden
+NETWORKNAME: ansible
+PORT_NUMBER: 8877
+USER: troy

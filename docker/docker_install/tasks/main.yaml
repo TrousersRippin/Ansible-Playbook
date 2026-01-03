@@ -1,0 +1,69 @@
+---
+- name: Get distribution release fact
+  ansible.builtin.setup:
+    gather_subset:
+      - distribution_release
+      - architecture
+
+- name: Install Docker
+  ansible.builtin.package:
+    name: 
+      - docker.io
+      - docker-cli
+      - docker-compose
+    state: present
+    update_cache: true
+
+- name: Create a directory for compose files
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/.config/compose/"
+    state: directory
+    mode: '0755'
+    owner: '{{ USER }}'
+    group: '{{ USER }}'
+
+- name: Create a directory for container storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/"
+    state: directory
+    mode: '0755'
+    owner: '{{ USER }}'
+    group: '{{ USER }}'
+
+- name: Add user to Docker group
+  ansible.builtin.user:
+    name: "{{ USER }}"
+    groups: docker
+    append: true
+  notify: Restart Docker
+
+- name: Enable Docker service
+  ansible.builtin.systemd:
+    name: docker
+    enabled: true
+    state: started
+
+- name: Create a Docker network
+  docker_network:
+    name: ansible
+    ipam_config:
+      - subnet: "{{ SUBNET }}"
+        gateway: "{{ GATEWAY }}"
+
+- name: Verify Docker installation
+  become: false
+  command: docker --version
+  register: docker_version
+
+- name: Show installed Docker version
+  debug:
+    msg: "Docker version: {{ docker_version.stdout }}"
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Restart getty service to prevent respawn loop
+  ansible.builtin.systemd:
+    name: getty@tty1.service
+    state: restarted

@@ -1,0 +1,31 @@
+[Unit]
+Description={{ APP }}
+Wants=network-online.target
+After=network-online.target local-fs.target podman.socket
+
+[Container]
+ContainerName={{ APP }}
+Image={{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+AutoUpdate=registry
+Timezone=local
+
+EnvironmentFile={{ APP }}.env
+
+HealthCmd=none
+
+HostName={{ APP }}
+Network={{ NETWORK }}.network
+PublishPort={{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
+
+Volume=%h/containers/storage/{{ APP }}/config:/config:rw,Z
+Volume=/%t/podman/podman.sock:/var/run/docker.sock:ro
+
+[Service]
+NoNewPrivileges=true
+Restart=on-failure
+TimeoutStartSec=300
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target default.target

@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: lscr.io/linuxserver/prowlarr
+IMAGE_TAG: latest
+APP: prowlarr
+NETWORK: ansible
+PORT_NUMBER: 9696
+USER: troy

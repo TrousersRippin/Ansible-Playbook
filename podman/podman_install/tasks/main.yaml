@@ -1,0 +1,70 @@
+---
+- name: Install Podman
+  ansible.builtin.package:
+    name: podman
+    state: latest
+    update_cache: true
+
+- name: Create a directory for container files
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/.config/containers/systemd/"
+    state: directory
+    mode: '0755'
+    owner: '{{ USER }}'
+    group: '{{ USER }}'
+
+- name: Create a directory for container storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/"
+    state: directory
+    mode: '0755'
+    owner: '{{ USER }}'
+    group: '{{ USER }}'
+
+- name: Enable and start Podman services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - podman.socket
+    - podman.service
+    - podman-auto-update.service
+    - podman-auto-update.timer
+    - podman-clean-transient.service
+    - podman-restart.service
+
+- name: Enable and start Podman --user services
+  ansible.builtin.command: systemctl --user enable --now "{{ item }}"
+  become: true
+  become_user: "{{ USER }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ ANSIBLE_USER_ID }}"
+  loop:
+    - podman.socket
+    - podman.service
+    - podman-auto-update.service
+    - podman-auto-update.timer
+    - podman-clean-transient.service
+    - podman-restart.service
+
+- name: Enable linger for user
+  ansible.builtin.command: loginctl enable-linger "{{ USER }}"
+  become: true
+
+- name: Create a Podman network
+  ansible.builtin.template:
+    src: network.j2
+    dest: "/home/{{ USER }}/.config/containers/systemd/{{ NETWORK }}.network"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Verify Podman installation
+  become: false
+  command: podman --version
+  register: podman_version
+
+- name: Show installed Podman version
+  debug:
+    msg: "Podman version: {{ podman_version.stdout }}"

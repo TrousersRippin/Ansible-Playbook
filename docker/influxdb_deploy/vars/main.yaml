@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: docker.io/library/influxdb
+IMAGE_TAG: latest
+APP: influxdb
+NETWORK: ansible
+PORT_NUMBER: 8086
+USER: troy

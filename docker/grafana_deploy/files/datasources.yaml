@@ -1,0 +1,31 @@
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    orgId: 1
+    uid: prometheus
+    url: http://prometheus:9090
+    editable: true
+    isDefault: true
+
+  - name: Loki
+    type: loki
+    orgId: 1
+    uid: loki
+    url: http://loki:3100
+    editable: true
+
+  - name: InfluxDB
+    type: influxdb
+    orgId: 1
+    uid: influxdb
+    url: http://influxdb:8086
+    editable: true
+    jsonData:
+      version: Flux
+      organization: homelab
+      defaultBucket: docker
+      tlsSkipVerify: true
+    secureJsonData:
+      token: xyMy9kAPEjtN1QXGFKrmKLebE9PUziyGywf3hWBW74M=

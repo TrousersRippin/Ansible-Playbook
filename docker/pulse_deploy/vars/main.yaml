@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: docker.io/rcourtman/pulse
+IMAGE_TAG: latest
+APP: pulse
+NETWORKNAME: ansible
+PORT_NUMBER: 7655
+USER: troy

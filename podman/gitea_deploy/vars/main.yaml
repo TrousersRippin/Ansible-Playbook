@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: docker.io/gitea/gitea
+IMAGE_TAG: latest-rootless
+APP: gitea
+NETWORK: ansible
+PORT_NUMBER: 3000
+USER: troy
+ANSIBLE_USER_ID: 1000

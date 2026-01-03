@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: docker.io/amir20/dozzle
+IMAGE_TAG: latest
+APP: dozzle
+HOSTNAME: debian
+NETWORK: ansible
+PORT_NUMBER: 8008
+USER: troy

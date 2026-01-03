@@ -1,0 +1,80 @@
+---
+- name: Ensure Podman is installed
+  ansible.builtin.package:
+    name: podman
+    state: present
+
+- name: Ensure Podman service is running
+  ansible.builtin.service:
+    name: podman
+    state: started
+    enabled: true
+
+- name: Create a directory for systemd file
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/.config/containers/systemd/{{ APP }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Create a directory for container config storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/config"
+    state: directory
+    mode: '0755'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Create a directory for container transcode storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/transcode"
+    state: directory
+    mode: '0755'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Add container file
+  ansible.builtin.template:
+    src: "templates/container.j2"
+    dest: "/home/{{ USER }}/.config/containers/systemd/{{ APP }}/{{ APP }}.container"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Add env file
+  ansible.builtin.template:
+    src: "templates/env.j2"
+    dest: "/home/{{ USER }}/.config/containers/systemd/{{ APP }}/{{ APP }}.env"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Check if image exists
+  ansible.builtin.command: >
+    podman image exists {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+  become: true
+  become_user: "{{ USER }}"
+  register: image_check
+  failed_when: false
+
+- name: Pull image if missing
+  ansible.builtin.command: >
+    podman pull {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+  become: true
+  become_user: "{{ USER }}"
+  when: image_check.rc != 0
+
+- name: Reload systemd daemon
+  ansible.builtin.command: systemctl --user daemon-reload
+  become: true
+  become_user: "{{ USER }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ ANSIBLE_USER_ID }}"
+
+- name: Start container
+  ansible.builtin.command: systemctl --user start {{ APP }}
+  become: true
+  become_user: "{{ USER }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ ANSIBLE_USER_ID }}"

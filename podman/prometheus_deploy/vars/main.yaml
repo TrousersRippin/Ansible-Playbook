@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: docker.io/prom/prometheus
+IMAGE_TAG: latest
+APP: prometheus
+NETWORKNAME: ansible
+PORT_NUMBER: 9092
+USER: troy
+ANSIBLE_USER_ID: 1000

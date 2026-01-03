@@ -1,0 +1,60 @@
+---
+- name: Ensure Docker-Compose is installed
+  ansible.builtin.package:
+    name: docker-compose
+    state: present
+
+- name: Ensure Docker service is running
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Create a directory for compose file
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/.config/compose/{{ APP }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Add compose file
+  ansible.builtin.template:
+    src: "templates/compose.yaml.j2"
+    dest: "/home/{{ USER }}/.config/compose/{{ APP }}/compose.yaml"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Add env file
+  ansible.builtin.template:
+    src: "templates/env.j2"
+    dest: "/home/{{ USER }}/.config/compose/{{ APP }}/.env"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Check if image exists
+  community.docker.docker_image:
+    name: "{{ IMAGE_NAME }}"
+    tag: "{{ IMAGE_TAG }}"
+    source: pull
+
+- name: Wait for PostgreSQL to be healthy
+  community.docker.docker_container_info:
+    name: postgres
+  register: postgres_info
+  until: postgres_info.exists and postgres_info.container.State.Health.Status == "healthy"
+  retries: 30
+  delay: 10
+  failed_when: false
+
+- name: Check if PostgreSQL is healthy
+  ansible.builtin.fail:
+    msg: "PostgreSQL container is not healthy. Cannot proceed with {{ APP }} deployment."
+  when: not postgres_info.exists or postgres_info.container.State.Health.Status != "healthy"
+
+- name: Start container
+  community.docker.docker_compose_v2:
+    project_src: "/home/{{ USER }}/.config/compose/{{ APP }}"
+    state: present

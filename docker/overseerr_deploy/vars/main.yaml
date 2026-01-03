@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: lscr.io/linuxserver/overseerr
+IMAGE_TAG: latest
+APP: overseerr
+NETWORK: ansible
+PORT_NUMBER: 5055
+USER: troy

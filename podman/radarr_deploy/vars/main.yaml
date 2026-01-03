@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: lscr.io/linuxserver/radarr
+IMAGE_TAG: latest
+APP: radarr
+NETWORK: ansible
+PORT_NUMBER: 7878
+USER: troy
+ANSIBLE_USER_ID: 1000

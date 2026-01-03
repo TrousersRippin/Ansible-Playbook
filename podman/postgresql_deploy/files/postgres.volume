@@ -1,0 +1,6 @@
+[Unit]
+Description=PostgreSQL Data Volume
+
+[Volume]
+Label=app=postgres-data
+VolumeName=postgres-data

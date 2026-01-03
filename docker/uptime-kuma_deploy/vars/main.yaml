@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: docker.io/louislam/uptime-kuma
+IMAGE_TAG: 2
+APP: uptime-kuma
+NETWORK: ansible
+PORT_NUMBER: 3001
+USER: troy

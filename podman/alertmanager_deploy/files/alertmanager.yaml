@@ -1,0 +1,13 @@
+route:
+  receiver: 'mail'
+  repeat_interval: 1h
+  group_by: [ alertname ]
+
+receivers:
+  - name: 'mail'
+    email_configs:
+      - smarthost: 'smtp.mail.me.com:587'
+        auth_username: 'ansible@icloud.com'
+        auth_password: "abcd-efgh-ijcl-mnop"
+        from: 'ansible@icloud.com'
+        to: 'ansible@icloud.com'

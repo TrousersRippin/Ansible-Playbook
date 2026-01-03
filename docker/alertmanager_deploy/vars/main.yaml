@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: docker.io/prom/alertmanager
+IMAGE_TAG: latest
+APP: alertmanager
+NETWORKNAME: ansible
+PORT_NUMBER: 9093
+USER: troy
+NOBODY: 65534

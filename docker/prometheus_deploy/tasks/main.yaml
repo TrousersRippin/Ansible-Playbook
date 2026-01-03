@@ -1,0 +1,67 @@
+---
+- name: Ensure Docker-Compose is installed
+  ansible.builtin.package:
+    name: docker-compose
+    state: present
+
+- name: Ensure Docker service is running
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Create a directory for compose file
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/.config/compose/{{ APP }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Create a directory for container config storage
+  ansible.builtin.file:
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/config"
+    state: directory
+    mode: '0755'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Add alerts file
+  ansible.builtin.copy:
+    src: "files/alerts.yaml"
+    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/config/alerts.yaml"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Add config file
+  ansible.builtin.copy:
+    src: "files/prometheus.yaml"
+    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/config/{{ APP }}.yaml"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Add compose file
+  ansible.builtin.template:
+    src: "templates/compose.yaml.j2"
+    dest: "/home/{{ USER }}/.config/compose/{{ APP }}/compose.yaml"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
+- name: Create a volume for container data storage
+  community.docker.docker_volume:
+    name: "{{ APP }}-data"
+    state: present
+
+- name: Check if image exists
+  community.docker.docker_image:
+    name: "{{ IMAGE_NAME }}"
+    tag: "{{ IMAGE_TAG }}"
+    source: pull
+
+- name: Start container
+  community.docker.docker_compose_v2:
+    project_src: "/home/{{ USER }}/.config/compose/{{ APP }}"
+    state: present
