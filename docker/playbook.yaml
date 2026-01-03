@@ -18,8 +18,8 @@
     - filebrowser_deploy
     #- alertmanager_deploy
     #- prometheus_deploy
-    #- telegraf_deploy
-    #- influxdb_deploy
+    - telegraf_deploy
+    - influxdb_deploy
     #- alloy_deploy
     #- loki_deploy
     #- grafana_deploy
@@ -47,7 +47,7 @@
     #- transmission_deploy
     #- uptime-kuma_deploy
     #- vaultwarden_deploy
-    - whatsupdocker_deploy
+    #- whatsupdocker_deploy
     #- redis_deploy
     #- paperless-ngx_deploy
     #- mariadb_deploy

@@ -26,6 +26,14 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
+- name: Add config file
+  ansible.builtin.copy:
+    src: "files/config.yaml"
+    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/config/config.yaml"
+    mode: '0644'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
 - name: Add compose file
   ansible.builtin.template:
     src: "templates/compose.yaml.j2"

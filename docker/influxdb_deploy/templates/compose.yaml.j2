@@ -13,6 +13,7 @@ services:
     ports:
       - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
+      - /home/{{ USER }}/containers/storage/{{ APP }}/config/config.yaml:/etc/influxdb2/config.yaml:ro
       - /home/{{ USER }}/containers/storage/{{ APP }}/config:/etc/influxdb2:rw
       - {{ APP }}-data:/var/lib/influxdb2:rw
       - /etc/localtime:/etc/localtime:ro
