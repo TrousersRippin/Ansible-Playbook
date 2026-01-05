@@ -106,14 +106,6 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
-- name: Add node-exporter dashboard file
-  ansible.builtin.copy:
-    src: "files/node-exporter.json"
-    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/dashboards/node-exporter.json"
-    mode: '0644'
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-
 - name: Add podman-exporter dashboard file
   ansible.builtin.copy:
     src: "files/podman-exporter.json"

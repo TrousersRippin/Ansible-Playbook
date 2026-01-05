@@ -106,14 +106,6 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
-- name: Add node-exporter dashboard file
-  ansible.builtin.copy:
-    src: "files/node-exporter.json"
-    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/dashboards/node-exporter.json"
-    mode: '0644'
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-
 - name: Add compose file
   ansible.builtin.template:
     src: "templates/compose.yaml.j2"
