@@ -13,7 +13,7 @@ ufw_allowed_ports:
   #- { port: 3100, proto: tcp, comment: 'Loki' }
   #- { port: 3210, proto: tcp, comment: 'Umami' }
   #- { port: 3306, proto: tcp, comment: 'MariaDB' }
-  - { port: 3322, proto: tcp, comment: 'Whatsupdocker' }
+  #- { port: 3322, proto: tcp, comment: 'Whatsupdocker' }
   #- { port: 3333, proto: tcp, comment: 'Grafana' }
   #- { port: 5000, proto: tcp, comment: 'Kavita' }
   #- { port: 5055, proto: tcp, comment: 'Jellyseerr' }
@@ -30,9 +30,9 @@ ufw_allowed_ports:
   #- { port: 8001, proto: tcp, comment: 'Gotify' }
   - { port: 8005, proto: tcp, comment: 'Filebrowser' }
   - { port: 8008, proto: tcp, comment: 'Dozzle' }
-  - { port: 8086, proto: tcp, comment: 'InfluxDB' }
+  #- { port: 8086, proto: tcp, comment: 'InfluxDB' }
   #- { port: 8096, proto: tcp, comment: 'Jellyfin' }
-  - { port: 8125, proto: tcp, comment: 'Telegraf' }
+  #- { port: 8125, proto: tcp, comment: 'Telegraf' }
   #- { port: 8181, proto: tcp, comment: 'Tautulli' }
   #- { port: 8384, proto: tcp, comment: 'Syncthing' }
   #- { port: 8877, proto: tcp, comment: 'Vaultwarden' }

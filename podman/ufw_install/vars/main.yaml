@@ -26,8 +26,8 @@ ufw_allowed_ports:
   #- { port: 7878, proto: tcp, comment: 'Radarr' }
   #- { port: 8000, proto: tcp, comment: 'Paperless-ngx' }
   #- { port: 8001, proto: tcp, comment: 'Gotify' }
-  - { port: 8005, proto: tcp, comment: 'Filebrowser' }
-  - { port: 8008, proto: tcp, comment: 'Dozzle' }
+  #- { port: 8005, proto: tcp, comment: 'Filebrowser' }
+  #- { port: 8008, proto: tcp, comment: 'Dozzle' }
   #- { port: 8096, proto: tcp, comment: 'Jellyfin' }
   #- { port: 8181, proto: tcp, comment: 'Tautulli' }
   #- { port: 8384, proto: tcp, comment: 'Syncthing' }

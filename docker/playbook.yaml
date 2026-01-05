@@ -18,8 +18,8 @@
     - filebrowser_deploy
     #- alertmanager_deploy
     #- prometheus_deploy
-    - telegraf_deploy
-    - influxdb_deploy
+    #- telegraf_deploy
+    #- influxdb_deploy
     #- alloy_deploy
     #- loki_deploy
     #- grafana_deploy
