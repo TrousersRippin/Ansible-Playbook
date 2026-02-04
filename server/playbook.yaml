@@ -8,7 +8,7 @@
 
 ---
 - name: Server Setup
-  hosts: debian
+  hosts: virtual_machines
   become: true
   roles:
     - server_install
