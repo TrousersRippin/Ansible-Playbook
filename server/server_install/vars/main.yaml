@@ -1,8 +1,0 @@
----
-ANSIBLE_PASSWORD: 29t03r76
-ANSIBLE_USER: root
-NEW_USER_NAME: troy
-NEW_USER_FULLNAME: Troy Rippin
-NEW_USER_PASSWORD: 29t03r76
-SSH_KEY_PATH: /Users/troy/.ssh/id_ed25519.pub
-TIMEZONE: Europe/Stockholm

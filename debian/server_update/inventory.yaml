@@ -1,20 +1,26 @@
 ---
 virtual_machines:
   hosts:
-    debian-01:
-      ansible_host: 10.1.2.51
+    technitium:
+      ansible_host: 10.1.1.15
       ansible_become: true
       ansible_become_method: sudo
       ansible_python_interpreter: /usr/bin/python3.13
 
-    debian-02:
-      ansible_host: 10.1.2.52
+    zabbix:
+      ansible_host: 10.1.1.16
       ansible_become: true
       ansible_become_method: sudo
       ansible_python_interpreter: /usr/bin/python3.13
 
-    debian-03:
-      ansible_host: 10.1.2.53
+    postgres:
+      ansible_host: 10.1.1.17
+      ansible_become: true
+      ansible_become_method: sudo
+      ansible_python_interpreter: /usr/bin/python3.13
+
+    minecraft:
+      ansible_host: 10.1.1.18
       ansible_become: true
       ansible_become_method: sudo
       ansible_python_interpreter: /usr/bin/python3.13

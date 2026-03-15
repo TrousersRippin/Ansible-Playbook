@@ -1,14 +1,13 @@
-#cd $HOME/Documents/Tech/Ansible-Playbook/server
+#cd $HOME/Documents/Tech/Ansible-Playbook/debian/server_update
 #
-#ansible-vault encrypt /Users/troy/Documents/Tech/Ansible-Playbook/server/server_install/vars/main.yaml
-#ansible-vault decrypt /Users/troy/Documents/Tech/Ansible-Playbook/server/server_install/vars/main.yaml
-#
-#ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml --ask-become-pass --key-file $HOME/.ssh/id_ed25519
-#ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml
+#ansible-playbook playbook.yaml -i inventory.yaml --key-file $HOME/.ssh/id_ed25519
 
 ---
-- name: Server Setup
+- name: Server Update
   hosts: virtual_machines
-  become: true
-  roles:
-    - server_install
+  vars_files:
+    - vars/main.yaml
+  tasks:
+    - ansible.builtin.import_tasks: tasks/main.yaml
+  handlers:
+    - ansible.builtin.import_tasks: handlers/main.yaml
