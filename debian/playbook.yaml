@@ -1,0 +1,15 @@
+#cd $HOME/Documents/Tech/Ansible-Playbook/debian
+#
+#ansible-vault encrypt /Users/troy/Documents/Tech/Ansible-Playbook/debian/server_install/vars/main.yaml
+#ansible-vault decrypt /Users/troy/Documents/Tech/Ansible-Playbook/debian/server_install/vars/main.yaml
+#
+#ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml --ask-pass --ask-become-pass
+#ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml
+
+---
+- name: Server install
+  hosts: virtual_machines
+  vars_files:
+    - vars/main.yaml
+  roles:
+    - server_install

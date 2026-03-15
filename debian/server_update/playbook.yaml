@@ -6,8 +6,6 @@
 #ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml --ask-become-pass --key-file $HOME/.ssh/id_ed25519
 #ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml
 
-#ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml --ask-pass --ask-become-pass
-
 ---
 - name: Server Setup
   hosts: virtual_machines

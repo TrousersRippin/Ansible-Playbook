@@ -1,34 +1,29 @@
 ---
-- name: Update apt
+- name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
 
-- name: Upgrade distibution
+- name: Upgrade distribution
   ansible.builtin.apt:
     upgrade: dist
 
-- name: Update all package
+- name: Remove unused dependencies
   ansible.builtin.apt:
-    name: "*"
-    state: latest
-
-- name: Remove dependencies
-  ansible.builtin.apt:
-    autoremove: yes
+    autoremove: true
 
 - name: Set timezone
   ansible.builtin.timezone:
     name: "{{ TIMEZONE }}"
 
-- name: Create SSH directory for the root user
+- name: Create SSH directory for root user
   ansible.builtin.file:
-    path: "/{{ ANSIBLE_USER }}/.ssh"
+    path: "/root/.ssh"
     state: directory
     mode: '0700'
 
 - name: Add SSH key to root user's authorized_keys
   ansible.builtin.authorized_key:
-    user: "{{ ANSIBLE_USER }}"
+    user: root
     key: "{{ lookup('file', SSH_KEY_PATH) }}"
     state: present
 
@@ -36,13 +31,19 @@
   ansible.builtin.set_fact:
     hashed_password: "{{ NEW_USER_PASSWORD | password_hash('sha512') }}"
 
+- name: Create group for new user
+  ansible.builtin.group:
+    name: "{{ NEW_USER_NAME }}"
+    gid: 1000
+    state: present
+
 - name: Add user
   ansible.builtin.user:
     name: "{{ NEW_USER_NAME }}"
     comment: "{{ NEW_USER_FULLNAME }}"
     uid: 1000
-    group: 1000
-    create_home: yes
+    group: "{{ NEW_USER_NAME }}"
+    create_home: true
     state: present
     groups: sudo
     append: true
@@ -55,13 +56,15 @@
     mode: '0440'
     validate: /usr/sbin/visudo -cf %s
 
-- name: Create .ssh directory
+- name: Create .ssh directory for new user
   ansible.builtin.file:
     path: "/home/{{ NEW_USER_NAME }}/.ssh"
     state: directory
+    owner: "{{ NEW_USER_NAME }}"
+    group: "{{ NEW_USER_NAME }}"
     mode: '0700'
 
-- name: Add SSH key to authorized_keys
+- name: Add SSH key to new user's authorized_keys
   ansible.builtin.authorized_key:
     user: "{{ NEW_USER_NAME }}"
     key: "{{ lookup('file', SSH_KEY_PATH) }}"
@@ -77,7 +80,7 @@
       PasswordAuthentication no
     mode: '0600'
   notify: restart ssh
-  
+
 - name: Install packages
   ansible.builtin.apt:
     name:
@@ -108,7 +111,7 @@
       bantime = 3600
       findtime = 600
       maxretry = 5
-      
+
       [sshd]
       enabled = true
       backend = systemd
@@ -117,25 +120,19 @@
   ansible.builtin.service:
     name: fail2ban
     state: started
-    enabled: yes
+    enabled: true
 
-- name: Update firewall for OpenSSH
+- name: Allow OpenSSH through firewall
   ansible.builtin.ufw:
     rule: allow
     name: OpenSSH
-    state: enabled
 
-- name: Enable UFW
+- name: Enable UFW with default deny policy
   ansible.builtin.ufw:
     state: enabled
     policy: deny
 
-- name: Install unattended-upgrades
-  ansible.builtin.apt:
-    name: unattended-upgrades
-    state: present
-
-- name: Enable unattended-upgrades
+- name: Enable unattended-upgrades via debconf
   ansible.builtin.debconf:
     name: unattended-upgrades
     question: unattended-upgrades/enable_auto_updates
@@ -143,10 +140,10 @@
     vtype: boolean
 
 - name: Configure unattended-upgrades
-  ansible.builtin.blockinfile:
-    path: /etc/apt/apt.conf.d/50unattended-upgrades
-    create: yes
-    block: |
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    mode: '0644'
+    content: |
       Unattended-Upgrade::Allowed-Origins {
           "${distro_id}:${distro_codename}";
           "${distro_id}:${distro_codename}-security";
@@ -159,9 +156,10 @@
       Unattended-Upgrade::Remove-Unused-Dependencies "true";
       Unattended-Upgrade::Automatic-Reboot "false";
 
-- name: Configure automatic updates
+- name: Configure automatic update schedule
   ansible.builtin.copy:
     dest: /etc/apt/apt.conf.d/20auto-upgrades
+    mode: '0644'
     content: |
       APT::Periodic::Update-Package-Lists "1";
       APT::Periodic::Download-Upgradeable-Packages "1";
@@ -172,15 +170,15 @@
   ansible.builtin.service:
     name: unattended-upgrades
     state: started
-    enabled: yes
+    enabled: true
 
-- name: Edit console
+# NOTE: enp2s0 is hardcoded here — update if interface name differs on target host
+- name: Edit console banner
   ansible.builtin.copy:
     dest: /etc/issue
+    mode: '0644'
     content: |
       \S
       Kernel \r on an \m
       \d \t
-      ens160: \4{ens160}
-
-    mode: '0644'
+      enp2s0: \4{enp2s0}
