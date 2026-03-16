@@ -9,7 +9,7 @@
     upgrade: full
     autoclean: true
   register: apt_upgrade_result
-  notify: Apt upgrade summary
+  notify: apt upgrade summary
 
 - name: Remove packages that are no longer required
   ansible.builtin.apt:

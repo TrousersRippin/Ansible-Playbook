@@ -1,10 +1,6 @@
 ---
-# Set to true to allow reboots when /var/run/reboot-required exists.
-# Override at runtime with: --extra-vars "allow_reboot=true"
-allow_reboot: false
-
+allow_reboot: true
 apt_cache_valid_time: 3600
-
 reboot_message: "Reboot triggered by Ansible after package upgrades"
 reboot_timeout: 300
 reboot_pre_delay: 5

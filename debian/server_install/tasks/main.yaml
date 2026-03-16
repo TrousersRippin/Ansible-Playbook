@@ -79,7 +79,7 @@
       PubkeyAuthentication yes
       PasswordAuthentication no
     mode: '0600'
-  notify: restart ssh
+  notify: Restart ssh
 
 - name: Install packages
   ansible.builtin.apt:
@@ -88,7 +88,6 @@
       - git
       - gpg
       - htop
-      - nala
       - tree
       - vim
       - zsh
@@ -171,14 +170,3 @@
     name: unattended-upgrades
     state: started
     enabled: true
-
-# NOTE: enp2s0 is hardcoded here — update if interface name differs on target host
-- name: Edit console banner
-  ansible.builtin.copy:
-    dest: /etc/issue
-    mode: '0644'
-    content: |
-      \S
-      Kernel \r on an \m
-      \d \t
-      enp2s0: \4{enp2s0}
