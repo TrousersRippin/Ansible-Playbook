@@ -1,14 +1,9 @@
 ---
 virtual_machines:
+  vars:
+    ansible_become: true
+    ansible_become_method: sudo
+    ansible_python_interpreter: /usr/bin/python3
   hosts:
-    debian-cloud-01:
+    debian:
       ansible_host: 10.1.1.20
-      ansible_become: true
-      ansible_become_method: sudo
-      ansible_python_interpreter: /usr/bin/python3.13
-
-    ubuntu-cloud-01:
-      ansible_host: 10.1.1.21
-      ansible_become: true
-      ansible_become_method: sudo
-      ansible_python_interpreter: /usr/bin/python3.13
