@@ -345,13 +345,13 @@
 
 - name: Configure primary network interface
   ansible.builtin.copy:
-    dest: /etc/systemd/network/10-{{ NETWORK_INTERFACE }}.network
+    dest: /etc/systemd/network/10-{{ ansible_default_ipv4.interface }}.network
     owner: root
     group: systemd-network
     mode: '0640'
     content: |
       [Match]
-      Name={{ NETWORK_INTERFACE }}
+      Name={{ ansible_default_ipv4.interface }}
 
       [Network]
       DHCP=ipv4
@@ -488,7 +488,7 @@
       \e[32m\S\e[0m
       \e[37mKernel \r\e[0m
       \e[90m\d \t\e[0m
-      \e[31m{{ NETWORK_INTERFACE }}:\e[0m \4{{ '{' }}{{ NETWORK_INTERFACE }}{{ '}' }}
+      \e[31m{{ ansible_default_ipv4.interface }}:\e[0m \4{{ '{' }}{{ ansible_default_ipv4.interface }}{{ '}' }}
       \e[36mconsole:\e[0m \l
 
 - name: Configure keyboard layout

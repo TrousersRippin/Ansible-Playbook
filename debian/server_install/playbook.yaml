@@ -3,9 +3,7 @@
 #ansible-vault encrypt /Users/troy/Documents/Tech/Ansible-Playbook/debian/server_install/vars/main.yaml
 #ansible-vault decrypt /Users/troy/Documents/Tech/Ansible-Playbook/debian/server_install/vars/main.yaml
 #
-#ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml --ask-pass --ask-become-pass
-#ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml --key-file $HOME/.ssh/id_ed25519
-
+#ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml --ask-become-pass --key-file $HOME/.ssh/id_ed25519
 ---
 - name: Server install
   hosts: virtual_machines
