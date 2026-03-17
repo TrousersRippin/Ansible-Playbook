@@ -3,7 +3,7 @@ bare_metal:
   vars:
     ansible_become: true
     ansible_become_method: sudo
-    ansible_python_interpreter: /usr/bin/python3.13
+    ansible_python_interpreter: /usr/bin/python3
   hosts:
     zimacube:
       ansible_host: 10.1.1.11
@@ -18,7 +18,7 @@ virtual_machines:
   vars:
     ansible_become: true
     ansible_become_method: sudo
-    ansible_python_interpreter: /usr/bin/python3.13
+    ansible_python_interpreter: /usr/bin/python3
   hosts:
     technitium:
       ansible_host: 10.1.1.15

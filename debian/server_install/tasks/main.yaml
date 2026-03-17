@@ -1,5 +1,17 @@
 ---
 # =============================================================================
+# Environment detection
+# =============================================================================
+- name: Set container flag
+  ansible.builtin.set_fact:
+    is_lxc: "{{ ansible_virtualization_type == 'lxc' }}"
+
+- name: Check for systemd-boot EFI directory
+  ansible.builtin.stat:
+    path: /boot/efi/loader
+  register: efi_loader_dir
+
+# =============================================================================
 # System
 # =============================================================================
 - name: Set hostname
@@ -181,6 +193,7 @@
     name:
       - bat
       - btop
+      - console-setup
       - curl
       - duf
       - ethtool
@@ -192,13 +205,18 @@
       - iputils-arping
       - iputils-ping
       - iputils-tracepath
-      - nala
       - net-tools
-      - smartmontools
+      - systemd-timesyncd
       - tree
       - vim
       - zsh
     state: present
+
+- name: Install smartmontools (bare metal / VM only)
+  ansible.builtin.apt:
+    name: smartmontools
+    state: present
+  when: not is_lxc
 
 - name: Install security packages
   ansible.builtin.apt:
@@ -224,7 +242,7 @@
 
       [sshd]
       enabled = true
-      backend = systemd
+      backend = auto
 
 - name: Start and enable fail2ban
   ansible.builtin.service:
@@ -239,11 +257,13 @@
   ansible.builtin.ufw:
     rule: allow
     name: OpenSSH
+  when: not is_lxc
 
 - name: Enable UFW with default deny policy
   ansible.builtin.ufw:
     state: enabled
     policy: deny
+  when: not is_lxc
 
 # =============================================================================
 # Unattended upgrades
@@ -328,6 +348,7 @@
     mode: '0644'
     content: |
       # This system is configured to use systemd-networkd, see /etc/systemd/network/
+  when: not is_lxc
 
 - name: Configure loopback network
   ansible.builtin.copy:
@@ -342,6 +363,7 @@
       [Network]
       Address=127.0.0.1/8
       LinkLocalAddressing=no
+  when: not is_lxc
 
 - name: Configure primary network interface
   ansible.builtin.copy:
@@ -360,16 +382,19 @@
 
       [Link]
       RequiredForOnline=yes
+  when: not is_lxc
 
 - name: Enable systemd-networkd
   ansible.builtin.service:
     name: systemd-networkd
     enabled: true
+  when: not is_lxc
 
 - name: Remove ifupdown
   ansible.builtin.apt:
     name: ifupdown
     state: absent
+  when: not is_lxc
 
 # =============================================================================
 # systemd-journald
@@ -440,6 +465,7 @@
     path: /etc/systemd/sleep.conf.d
     state: directory
     mode: '0755'
+  when: not is_lxc
 
 - name: Configure systemd-sleep
   ansible.builtin.copy:
@@ -451,6 +477,7 @@
       AllowHibernation=no
       AllowSuspendThenHibernate=no
       AllowHybridSleep=no
+  when: not is_lxc
 
 # =============================================================================
 # Kernel parameters
@@ -461,6 +488,7 @@
     mode: '0644'
     content: |
       kernel.printk=1 4 1 4
+  failed_when: false
 
 - name: Create systemd system.conf.d directory
   ansible.builtin.file:
@@ -560,6 +588,7 @@
     path: /root/.bash_history
     line: "sed -i '/options/ { /[[:space:]]quiet$/! s/$/ quiet/ }' /boot/efi/loader/entries/*.conf"
     create: true
+  when: efi_loader_dir.stat.exists
 
 # =============================================================================
 # Systemd-boot
@@ -572,6 +601,7 @@
       timeout 3
       editor no
       console-mode keep
+  when: efi_loader_dir.stat.exists
 
 # =============================================================================
 # Reboot

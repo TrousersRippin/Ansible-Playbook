@@ -3,7 +3,9 @@ virtual_machines:
   vars:
     ansible_become: true
     ansible_become_method: sudo
-    ansible_python_interpreter: /usr/bin/python3.13
+    ansible_python_interpreter: /usr/bin/python3
   hosts:
-    debian-vm:
-      ansible_host: 172.16.225.130
+    debian:
+      ansible_host: 10.1.1.*
+    debian-lxc:
+      ansible_host: 10.1.1.*
