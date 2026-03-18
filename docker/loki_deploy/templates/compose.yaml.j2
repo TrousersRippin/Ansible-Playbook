@@ -16,7 +16,7 @@ services:
       - {{ PORT_NUMBER1 }}:{{ PORT_NUMBER1 }}/tcp
       - {{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/tcp
     volumes:
-      - /home/{{ USER }}/containers/storage/{{ APP }}/config/{{ APP }}.yaml:/etc/{{ APP }}/{{ APP }}.yaml:ro
+      - /opt/stacks/{{ APP }}/config/{{ APP }}.yaml:/etc/{{ APP }}/{{ APP }}.yaml:ro
       - {{ APP }}-data:/{{ APP }}:rw
       - /etc/localtime:/etc/localtime:ro
     networks:

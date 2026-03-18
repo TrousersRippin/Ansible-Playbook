@@ -20,7 +20,7 @@
 
 - name: Create a directory for container config storage
   ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/config"
+    path: "/opt/stacks/{{ APP }}/config"
     state: directory
     mode: '0755'
     owner: "{{ USER }}"
@@ -29,7 +29,7 @@
 - name: Add config file
   ansible.builtin.copy:
     src: "files/config.production.json"
-    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/config/config.production.json"
+    dest: "/opt/stacks/{{ APP }}/config/config.production.json"
     mode: '0644'
     owner: "{{ USER }}"
     group: "{{ USER }}"

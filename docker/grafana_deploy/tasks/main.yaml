@@ -10,17 +10,9 @@
     state: started
     enabled: true
 
-- name: Create a directory for compose file
-  ansible.builtin.file:
-    path: "/home/{{ USER }}/.config/compose/{{ APP }}"
-    state: directory
-    mode: '0755'
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-
 - name: Create a directory for container config storage
   ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/config"
+    path: "/opt/stacks/{{ APP }}/config"
     state: directory
     mode: '0755'
     owner: "{{ USER }}"
@@ -28,7 +20,7 @@
 
 - name: Create a directory for container dashboard storage
   ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/dashboards"
+    path: "/opt/stacks/{{ APP }}/dashboards"
     state: directory
     mode: '0755'
     owner: "{{ USER }}"
@@ -36,7 +28,7 @@
 
 - name: Create a directory for container provisioning storage
   ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning"
+    path: "/opt/stacks/{{ APP }}/provisioning"
     state: directory
     mode: '0755'
     owner: "{{ USER }}"
@@ -44,7 +36,7 @@
 
 - name: Create a directory for container provisioning-alerting storage
   ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/alerting"
+    path: "/opt/stacks/{{ APP }}/provisioning/alerting"
     state: directory
     mode: '0755'
     owner: "{{ USER }}"
@@ -52,7 +44,7 @@
 
 - name: Create a directory for container provisioning-dashboards storage
   ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/dashboards"
+    path: "/opt/stacks/{{ APP }}/provisioning/dashboards"
     state: directory
     mode: '0755'
     owner: "{{ USER }}"
@@ -60,7 +52,7 @@
 
 - name: Create a directory for container provisioning-datasources storage
   ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/datasources"
+    path: "/opt/stacks/{{ APP }}/provisioning/datasources"
     state: directory
     mode: '0755'
     owner: "{{ USER }}"
@@ -68,7 +60,7 @@
 
 - name: Create a directory for container provisioning-plugins storage
   ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/plugins"
+    path: "/opt/stacks/{{ APP }}/provisioning/plugins"
     state: directory
     mode: '0755'
     owner: "{{ USER }}"
@@ -77,7 +69,7 @@
 - name: Add config file
   ansible.builtin.copy:
     src: "files/grafana.ini"
-    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/config/grafana.ini"
+    dest: "/opt/stacks/{{ APP }}/config/grafana.ini"
     mode: '0644'
     owner: "{{ USER }}"
     group: "{{ USER }}"
@@ -85,7 +77,7 @@
 - name: Add dashboards config file
   ansible.builtin.copy:
     src: "files/dashboards.yaml"
-    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/dashboards/dashboards.yaml"
+    dest: "/opt/stacks/{{ APP }}/provisioning/dashboards/dashboards.yaml"
     mode: '0644'
     owner: "{{ USER }}"
     group: "{{ USER }}"
@@ -93,7 +85,7 @@
 - name: Add datasources config file
   ansible.builtin.copy:
     src: "files/datasources.yaml"
-    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/datasources/datasources.yaml"
+    dest: "/opt/stacks/{{ APP }}/provisioning/datasources/datasources.yaml"
     mode: '0644'
     owner: "{{ USER }}"
     group: "{{ USER }}"
@@ -101,7 +93,7 @@
 - name: Add influxdb dashboard file
   ansible.builtin.copy:
     src: "files/influxdb.json"
-    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/dashboards/influxdb.json"
+    dest: "/opt/stacks/{{ APP }}/dashboards/influxdb.json"
     mode: '0644'
     owner: "{{ USER }}"
     group: "{{ USER }}"
@@ -109,7 +101,7 @@
 - name: Add compose file
   ansible.builtin.template:
     src: "templates/compose.yaml.j2"
-    dest: "/home/{{ USER }}/.config/compose/{{ APP }}/compose.yaml"
+    dest: "/opt/stacks/{{ APP }}/compose.yaml"
     mode: '0644'
     owner: "{{ USER }}"
     group: "{{ USER }}"
@@ -127,5 +119,5 @@
 
 - name: Start container
   community.docker.docker_compose_v2:
-    project_src: "/home/{{ USER }}/.config/compose/{{ APP }}/"
+    project_src: "/opt/stacks/{{ APP }}/"
     state: present

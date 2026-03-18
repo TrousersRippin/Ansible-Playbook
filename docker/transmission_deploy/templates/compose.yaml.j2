@@ -16,8 +16,8 @@ services:
       - {{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/tcp
       - {{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/udp
     volumes:
-      - /home/{{ USER }}/containers/storage/{{ APP }}/config:/config:rw
-      - /home/{{ USER }}/containers/storage/{{ APP }}/config:/watch:rw
+      - /opt/stacks/{{ APP }}/config:/config:rw
+      - /opt/stacks/{{ APP }}/config:/watch:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - {{ NETWORK }}

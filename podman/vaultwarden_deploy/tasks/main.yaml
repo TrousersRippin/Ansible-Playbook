@@ -20,7 +20,7 @@
 
 - name: Create a directory for container data storage
   ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/data"
+    path: "/opt/stacks/{{ APP }}/data"
     state: directory
     mode: '0755'
     owner: "{{ USER }}"

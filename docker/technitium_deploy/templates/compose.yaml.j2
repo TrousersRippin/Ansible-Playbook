@@ -15,7 +15,7 @@ services:
       - {{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/udp
       - {{ PORT_NUMBER3 }}:{{ PORT_NUMBER3 }}/tcp
     volumes:
-      - /home/{{ USER }}/containers/storage/{{ APP }}/config:/etc/dns:rw
+      - /opt/stacks/{{ APP }}/config:/etc/dns:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - {{ NETWORK }}

@@ -17,8 +17,8 @@ services:
     ports:
       - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
-      - /home/{{ USER }}/containers/storage/{{ APP }}/config/{{ APP }}.yaml:/etc/{{ APP }}/{{ APP }}.yaml:ro
-      - /home/{{ USER }}/containers/storage/{{ APP }}/config/alerts.yaml:/etc/{{ APP }}/alerts.yaml:ro
+      - /opt/stacks/{{ APP }}/config/{{ APP }}.yaml:/etc/{{ APP }}/{{ APP }}.yaml:ro
+      - /opt/stacks/{{ APP }}/config/alerts.yaml:/etc/{{ APP }}/alerts.yaml:ro
       - {{ APP }}-data:/{{ APP }}:rw
       - /etc/localtime:/etc/localtime:ro
     networks:

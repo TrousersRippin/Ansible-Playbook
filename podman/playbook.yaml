@@ -13,7 +13,6 @@
   roles:
     - podman_install
     - firewalld_install
-    #- ufw_install
     #- alertmanager_deploy
     #- audiobookshelf_deploy
     #- bazarr_deploy
@@ -22,32 +21,33 @@
     #- ghost_deploy
     #- gitea_deploy
     #- gotify_deploy
-    #- loki_deploy
     #- grafana_deploy
     #- homepage_deploy
     #- jellyfin_deploy
     #- jellyseerr_deploy
     #- kavita_deploy
+    #- loki_deploy
+    #- mariadb_deploy
     #- memos_deploy
     #- mkvtoolnix_deploy
     #- myspeed_deploy
     #- node-exporter_deploy
     #- overseerr_deploy
+    #- paperless-ngx_deploy
+    #- photoprism_deploy
     #- plex_deploy
-    #- prometheus_deploy
+    #- postgresql_deploy
     #- prometheus-podman-exporter_deploy
+    #- prometheus_deploy
     #- prowlarr_deploy
     #- pulse_deploy
     #- radarr_deploy
+    #- redis_deploy
     #- sonarr_deploy
     #- syncthing_deploy
     #- tautulli_deploy
     #- transmission_deploy
+    #- ufw_install
+    #- umami_deploy
     #- uptime-kuma_deploy
     #- vaultwarden_deploy
-    #- redis_deploy
-    #- paperless-ngx_deploy
-    #- mariadb_deploy
-    #- photoprism_deploy
-    #- postgresql_deploy
-    #- umami_deploy

@@ -14,8 +14,8 @@ services:
     ports:
       - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
-      - /home/{{ USER }}/containers/storage/{{ APP }}/config/config.production.json:/var/lib/ghost/config.production.json:ro
-      - /home/{{ USER }}/containers/storage/{{ APP }}/config:/var/lib/ghost/content:rw
+      - /opt/stacks/{{ APP }}/config/config.production.json:/var/lib/ghost/config.production.json:ro
+      - /opt/stacks/{{ APP }}/config:/var/lib/ghost/content:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - {{ NETWORK }}

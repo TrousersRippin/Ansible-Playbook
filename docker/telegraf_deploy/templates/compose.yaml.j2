@@ -14,7 +14,7 @@ services:
     ports:
       - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
-      - /home/{{ USER }}/containers/storage/{{ APP }}/config/{{ APP }}.conf:/etc/{{ APP }}/{{ APP }}.conf:ro
+      - /opt/stacks/{{ APP }}/config/{{ APP }}.conf:/etc/{{ APP }}/{{ APP }}.conf:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro

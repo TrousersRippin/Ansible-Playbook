@@ -12,45 +12,34 @@
   become: true
   roles:
     - docker_install
-    - ufw_install
-    #- firewalld_install
-    - dozzle_deploy
-    - filebrowser_deploy
-    #- alertmanager_deploy
-    #- prometheus_deploy
-    #- telegraf_deploy
-    #- influxdb_deploy
+    #- ufw_install
     #- alloy_deploy
-    #- loki_deploy
-    #- grafana_deploy
     #- audiobookshelf_deploy
     #- bazarr_deploy
+    - dozzle_deploy
+    - filebrowser_deploy
+    - gatus_deploy
     #- ghost_deploy
     #- gitea_deploy
     #- gotify_deploy
+    #- grafana_deploy
     #- homepage_deploy
     #- jellyfin_deploy
-    #- jellyseerr_deploy
     #- kavita_deploy
+    #- loki_deploy
     #- memos_deploy
     #- mkvtoolnix_deploy
     #- myspeed_deploy
-    #- overseerr_deploy
     #- plex_deploy
+    #- prometheus_deploy
     #- prowlarr_deploy
-    #- pulse_deploy
     #- radarr_deploy
+    #- seerr_deploy
     #- sonarr_deploy
     #- syncthing_deploy
     #- tautulli_deploy
     #- technitium_deploy
+    #- telegraf_deploy
     #- transmission_deploy
-    #- uptime-kuma_deploy
-    #- vaultwarden_deploy
-    #- whatsupdocker_deploy
-    #- redis_deploy
-    #- paperless-ngx_deploy
-    #- mariadb_deploy
-    #- photoprism_deploy
-    #- postgresql_deploy
     #- umami_deploy
+    #- vaultwarden_deploy

@@ -12,7 +12,7 @@ services:
     ports:
       - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
-      - /home/{{ USER }}/containers/storage/{{ APP }}/config:/config:rw
+      - /opt/stacks/{{ APP }}/config:/config:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - {{ NETWORK }}

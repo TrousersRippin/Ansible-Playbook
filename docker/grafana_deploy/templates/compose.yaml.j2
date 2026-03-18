@@ -13,9 +13,9 @@ services:
     ports:
       - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
-      - /home/{{ USER }}/containers/storage/{{ APP }}/config/{{ APP }}.ini:/etc/{{ APP }}/{{ APP }}.ini:rw
-      - /home/{{ USER }}/containers/storage/{{ APP }}/dashboards:/etc/{{ APP }}/dashboards:ro
-      - /home/{{ USER }}/containers/storage/{{ APP }}/provisioning:/etc/{{ APP }}/provisioning:ro
+      - /opt/stacks/{{ APP }}/config/{{ APP }}.ini:/etc/{{ APP }}/{{ APP }}.ini:rw
+      - /opt/stacks/{{ APP }}/dashboards:/etc/{{ APP }}/dashboards:ro
+      - /opt/stacks/{{ APP }}/provisioning:/etc/{{ APP }}/provisioning:ro
       - {{ APP }}-data:/var/lib/{{ APP }}:rw
       - /etc/localtime:/etc/localtime:ro
     networks:

@@ -12,8 +12,8 @@ services:
     ports:
       - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
-      - /home/{{ USER }}/containers/storage/{{ APP }}:/config:rw
-      - /home/{{ USER }}/containers/storage/{{ APP }}:/transcode:rw
+      - /opt/stacks/{{ APP }}:/config:rw
+      - /opt/stacks/{{ APP }}:/transcode:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - {{ NETWORK }}

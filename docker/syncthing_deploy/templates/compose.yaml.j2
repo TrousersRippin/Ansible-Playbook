@@ -17,7 +17,7 @@ services:
       - {{ PORT_NUMBER3 }}:{{ PORT_NUMBER3 }}/tcp
       - {{ PORT_NUMBER3 }}:{{ PORT_NUMBER3 }}/udp
     volumes:
-      - /home/{{ USER }}/containers/storage/{{ APP }}:/var/syncthing:rw
+      - /opt/stacks/{{ APP }}:/var/syncthing:rw
       - /home/{{ USER }}:/var/syncthing/home:rw
       - /etc/localtime:/etc/localtime:ro
     networks:

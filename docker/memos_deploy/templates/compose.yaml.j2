@@ -13,7 +13,7 @@ services:
     ports:
       - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
     volumes:
-      - /home/{{ USER }}/containers/storage/{{ APP }}/config:/var/opt/memos:rw
+      - /opt/stacks/{{ APP }}/config:/var/opt/memos:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - {{ NETWORK }}

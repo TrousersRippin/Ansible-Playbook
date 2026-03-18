@@ -12,7 +12,7 @@
 
 - name: Create a directory for compose file
   ansible.builtin.file:
-    path: "/home/{{ USER }}/.config/compose/{{ APP }}"
+    path: "/opt/stacks/{{ APP }}"
     state: directory
     mode: '0755'
     owner: "{{ USER }}"
@@ -21,7 +21,7 @@
 - name: Add compose file
   ansible.builtin.template:
     src: "templates/compose.yaml.j2"
-    dest: "/home/{{ USER }}/.config/compose/{{ APP }}/compose.yaml"
+    dest: "/opt/stacks/{{ APP }}/compose.yaml"
     mode: '0644'
     owner: "{{ USER }}"
     group: "{{ USER }}"
@@ -34,5 +34,5 @@
 
 - name: Start container
   community.docker.docker_compose_v2:
-    project_src: "/home/{{ USER }}/.config/compose/{{ APP }}"
+    project_src: "/opt/stacks/{{ APP }}"
     state: present

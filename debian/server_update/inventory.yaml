@@ -28,3 +28,5 @@ virtual_machines:
       ansible_host: 10.1.1.17
     minecraft:
       ansible_host: 10.1.1.18
+    debian:
+      ansible_host: 10.1.1.19

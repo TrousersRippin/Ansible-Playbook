@@ -196,34 +196,23 @@
       - console-setup
       - curl
       - duf
-      - ethtool
       - fastfetch
       - fzf
       - git
       - gpg
       - htop
-      - iputils-arping
-      - iputils-ping
-      - iputils-tracepath
-      - net-tools
       - systemd-timesyncd
       - tree
       - vim
       - zsh
     state: present
 
-- name: Install smartmontools (bare metal / VM only)
-  ansible.builtin.apt:
-    name: smartmontools
-    state: present
-  when: not is_lxc
-
 - name: Install security packages
   ansible.builtin.apt:
     name:
       - fail2ban
       - unattended-upgrades
-      - ufw
+      #- ufw
     state: present
 
 # =============================================================================
@@ -253,17 +242,17 @@
 # =============================================================================
 # UFW
 # =============================================================================
-- name: Allow OpenSSH through firewall
-  ansible.builtin.ufw:
-    rule: allow
-    name: OpenSSH
-  when: not is_lxc
-
-- name: Enable UFW with default deny policy
-  ansible.builtin.ufw:
-    state: enabled
-    policy: deny
-  when: not is_lxc
+#- name: Allow OpenSSH through firewall
+#  ansible.builtin.ufw:
+#    rule: allow
+#    name: OpenSSH
+#  when: not is_lxc
+#
+#- name: Enable UFW with default deny policy
+#  ansible.builtin.ufw:
+#    state: enabled
+#    policy: deny
+#  when: not is_lxc
 
 # =============================================================================
 # Unattended upgrades

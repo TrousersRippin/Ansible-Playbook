@@ -20,7 +20,7 @@
 
 - name: Create a directory for container storage
   ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}"
+    path: "/opt/stacks/{{ APP }}"
     state: directory
     mode: '0755'
     owner: "{{ USER }}"
@@ -28,7 +28,7 @@
 
 - name: Create a directory for container consume storage
   ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/consume"
+    path: "/opt/stacks/{{ APP }}/consume"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
@@ -36,7 +36,7 @@
 
 - name: Create a directory for container data storage
   ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/data"
+    path: "/opt/stacks/{{ APP }}/data"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
@@ -44,7 +44,7 @@
 
 - name: Create a directory for container export storage
   ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/export"
+    path: "/opt/stacks/{{ APP }}/export"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
@@ -52,7 +52,7 @@
 
 - name: Create a directory for container media storage
   ansible.builtin.file:
-    path: "/home/{{ USER }}/containers/storage/{{ APP }}/media"
+    path: "/opt/stacks/{{ APP }}/media"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
