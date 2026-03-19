@@ -12,8 +12,8 @@
   become: true
   roles:
     - docker_install
-    #- ufw_install
-    - alloy_deploy
+    - ufw_install
+    #- alloy_deploy
     #- audiobookshelf_deploy
     #- bazarr_deploy
     - dozzle_deploy
@@ -22,16 +22,16 @@
     #- ghost_deploy
     #- gitea_deploy
     #- gotify_deploy
-    - grafana_deploy
+    #- grafana_deploy
     #- homepage_deploy
     #- jellyfin_deploy
     #- kavita_deploy
-    - loki_deploy
+    #- loki_deploy
     #- memos_deploy
     #- mkvtoolnix_deploy
     #- myspeed_deploy
     #- plex_deploy
-    - prometheus_deploy
+    #- prometheus_deploy
     #- prowlarr_deploy
     #- radarr_deploy
     #- seerr_deploy
@@ -39,8 +39,8 @@
     #- syncthing_deploy
     #- tautulli_deploy
     #- technitium_deploy
-    - telegraf_deploy
-    - tempo_deploy
+    #- telegraf_deploy
+    #- tempo_deploy
     #- transmission_deploy
     #- umami_deploy
     #- vaultwarden_deploy
