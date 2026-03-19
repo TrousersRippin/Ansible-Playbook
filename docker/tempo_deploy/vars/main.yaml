@@ -1,0 +1,9 @@
+---
+IMAGE_NAME: docker.io/grafana/tempo
+IMAGE_TAG: 2.10.0
+APP: tempo
+NETWORK: ansible
+PORT_NUMBER1: 3200
+PORT_NUMBER2: 4317
+PORT_NUMBER3: 4318
+USER: troy

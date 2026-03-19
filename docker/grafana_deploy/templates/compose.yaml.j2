@@ -16,14 +16,10 @@ services:
       - /opt/stacks/{{ APP }}/config/{{ APP }}.ini:/etc/{{ APP }}/{{ APP }}.ini:rw
       - /opt/stacks/{{ APP }}/dashboards:/etc/{{ APP }}/dashboards:ro
       - /opt/stacks/{{ APP }}/provisioning:/etc/{{ APP }}/provisioning:ro
-      - {{ APP }}-data:/var/lib/{{ APP }}:rw
+      - /opt/stacks/{{ APP }}/data:/var/lib/{{ APP }}:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - {{ NETWORK }}
-
-volumes:
-  {{ APP }}-data:
-    external: true
 
 networks:
   {{ NETWORK }}:

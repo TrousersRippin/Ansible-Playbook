@@ -9,16 +9,14 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
-    command:
-      - --config.file=/etc/{{ APP }}/{{ APP }}.yaml
-      - --web.enable-remote-write-receiver
-      - --web.enable-lifecycle
-    user: {{ NOBODY }}:{{ NOBODY }}
+    command: ["-config.file=/etc/{{ APP }}.yaml"]
     ports:
-      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
+      - {{ PORT_NUMBER1 }}:{{ PORT_NUMBER1 }}/tcp
+      - {{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/tcp
+      - {{ PORT_NUMBER3 }}:{{ PORT_NUMBER3 }}/tcp
     volumes:
-      - /opt/stacks/{{ APP }}/config/{{ APP }}.yaml:/etc/{{ APP }}/{{ APP }}.yaml:ro
-      - {{ APP }}-data:/{{ APP }}:rw
+      - /opt/stacks/{{ APP }}/config/{{ APP }}.yaml:/etc/{{ APP }}.yaml:ro
+      - {{ APP }}-data:/var/{{ APP }}:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - {{ NETWORK }}

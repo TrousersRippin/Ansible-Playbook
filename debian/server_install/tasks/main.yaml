@@ -331,6 +331,13 @@
 # =============================================================================
 # systemd-networkd
 # =============================================================================
+- name: Ensure /etc/network directory exists
+  ansible.builtin.file:
+    path: /etc/network
+    state: directory
+    mode: '0755'
+  when: not is_lxc
+
 - name: Stub out /etc/network/interfaces
   ansible.builtin.copy:
     dest: /etc/network/interfaces

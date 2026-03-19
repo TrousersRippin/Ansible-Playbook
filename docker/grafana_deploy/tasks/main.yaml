@@ -18,6 +18,14 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
+- name: Create a directory for container data storage
+  ansible.builtin.file:
+    path: "/opt/stacks/{{ APP }}/data"
+    state: directory
+    mode: '0755'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
+
 - name: Create a directory for container dashboard storage
   ansible.builtin.file:
     path: "/opt/stacks/{{ APP }}/dashboards"
@@ -90,10 +98,10 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
 
-- name: Add influxdb dashboard file
+- name: Add docker dashboard file
   ansible.builtin.copy:
-    src: "files/influxdb.json"
-    dest: "/opt/stacks/{{ APP }}/dashboards/influxdb.json"
+    src: "files/docker.json"
+    dest: "/opt/stacks/{{ APP }}/dashboards/docker.json"
     mode: '0644'
     owner: "{{ USER }}"
     group: "{{ USER }}"
@@ -105,11 +113,6 @@
     mode: '0644'
     owner: "{{ USER }}"
     group: "{{ USER }}"
-
-- name: Create a volume for container data storage
-  community.docker.docker_volume:
-    name: "{{ APP }}-data"
-    state: present
 
 - name: Check if image exists
   community.docker.docker_image:

@@ -8,15 +8,6 @@ global:
   label_name_length_limit: 200
   label_value_length_limit: 200
 
-alerting:
-  alertmanagers:
-    - scheme: http
-      static_configs:
-        - targets: ["alertmanager:9093"]
-
-rule_files:
-  - "alerts.yaml"
-
 scrape_configs:
   - job_name: 'alloy'
     static_configs:
@@ -25,3 +16,8 @@ scrape_configs:
   - job_name: "prometheus"
     static_configs:
       - targets: ["prometheus:9090"]
+
+  - job_name: 'telegraf'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ["telegraf:9273"]

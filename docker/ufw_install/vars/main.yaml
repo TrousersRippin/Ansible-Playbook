@@ -5,14 +5,25 @@ ufw_allowed_ports:
   - { port: 53, proto: udp, comment: 'DNS' }
   - { port: 80, proto: tcp, comment: 'HTTP' }
   - { port: 443, proto: tcp, comment: 'HTTPS' }
+  #- { port: 12345, proto: tcp, comment: 'Alloy' }
+  #- { port: 13378, proto: tcp, comment: 'Audiobookshelf' }
+  #- { port: 21027, proto: udp, comment: 'Syncthing' }
+  #- { port: 22000, proto: tcp, comment: 'Syncthing' }
+  #- { port: 22000, proto: udp, comment: 'Syncthing' }
   #- { port: 2368, proto: tcp, comment: 'Ghost' }
   #- { port: 3000, proto: tcp, comment: 'Gitea' }
   #- { port: 3000, proto: tcp, comment: 'Homepage' }
   #- { port: 3100, proto: tcp, comment: 'Loki' }
+  #- { port: 3200, proto: udp, comment: 'Tempo' }
   #- { port: 3210, proto: tcp, comment: 'Umami' }
+  #- { port: 32400, proto: tcp, comment: 'Plex' }
   #- { port: 3333, proto: tcp, comment: 'Grafana' }
+  #- { port: 4317, proto: udp, comment: 'Tempo' }
+  #- { port: 4318, proto: udp, comment: 'Tempo' }
   #- { port: 5000, proto: tcp, comment: 'Kavita' }
   #- { port: 5055, proto: tcp, comment: 'Seerr' }
+  #- { port: 51413, proto: tcp, comment: 'Transmission' }
+  #- { port: 51413, proto: udp, comment: 'Transmission' }
   #- { port: 5216, proto: tcp, comment: 'MySpeed' }
   #- { port: 5230, proto: tcp, comment: 'Memos' }
   #- { port: 5800, proto: tcp, comment: 'MKVToolNix' }
@@ -31,12 +42,5 @@ ufw_allowed_ports:
   #- { port: 8989, proto: tcp, comment: 'Sonarr' }
   #- { port: 9090, proto: tcp, comment: 'Prometheus' }
   #- { port: 9091, proto: tcp, comment: 'Transmission' }
+  #- { port: 9273, proto: tcp, comment: 'Telegraf' }
   #- { port: 9696, proto: tcp, comment: 'Prowlarr' }
-  #- { port: 12345, proto: tcp, comment: 'Alloy' }
-  #- { port: 13378, proto: tcp, comment: 'Audiobookshelf' }
-  #- { port: 21027, proto: udp, comment: 'Syncthing' }
-  #- { port: 22000, proto: tcp, comment: 'Syncthing' }
-  #- { port: 22000, proto: udp, comment: 'Syncthing' }
-  #- { port: 32400, proto: tcp, comment: 'Plex' }
-  #- { port: 51413, proto: tcp, comment: 'Transmission' }
-  #- { port: 51413, proto: udp, comment: 'Transmission' }

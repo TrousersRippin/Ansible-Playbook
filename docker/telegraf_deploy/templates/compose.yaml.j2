@@ -12,12 +12,12 @@ services:
     command: ["--non-strict-env-handling"]
     user: ${UID}:{{ docker_gid }}
     ports:
-      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
+      - {{ PORT_NUMBER1 }}:{{ PORT_NUMBER1 }}/tcp
+      - {{ PORT_NUMBER2 }}:{{ PORT_NUMBER2 }}/tcp
     volumes:
       - /opt/stacks/{{ APP }}/config/{{ APP }}.conf:/etc/{{ APP }}/{{ APP }}.conf:ro
+      - /:/hostfs:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
       - {{ NETWORK }}
