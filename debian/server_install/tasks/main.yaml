@@ -1,4 +1,10 @@
 ---
+- name: Create Ansible remote_tmp directory
+  ansible.builtin.file:
+    path: /root/.cache/ansible/tmp
+    state: directory
+    mode: '0700'
+
 # =============================================================================
 # Environment detection
 # =============================================================================
@@ -16,7 +22,7 @@
 # =============================================================================
 - name: Set hostname
   ansible.builtin.hostname:
-    name: "{{ HOSTNAME }}"
+    name: "{{ inventory_hostname }}"
 
 - name: Configure /etc/hosts
   ansible.builtin.copy:
@@ -24,7 +30,7 @@
     mode: '0644'
     content: |
       127.0.0.1   localhost
-      127.0.1.1   {{ HOSTNAME }}   {{ HOST }}
+      127.0.1.1   {{ inventory_hostname }}   {{ HOST }}
 
 # =============================================================================
 # Package manager

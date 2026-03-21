@@ -1,4 +1,10 @@
 ---
+- name: Create Ansible remote_tmp directory
+  ansible.builtin.file:
+    path: /root/.cache/ansible/tmp
+    state: directory
+    mode: '0700'
+
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
@@ -9,7 +15,7 @@
     upgrade: full
     autoclean: true
   register: apt_upgrade_result
-  notify: apt upgrade summary
+  notify: Apt upgrade summary
 
 - name: Remove packages that are no longer required
   ansible.builtin.apt:

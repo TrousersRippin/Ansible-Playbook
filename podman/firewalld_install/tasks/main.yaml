@@ -1,4 +1,10 @@
 ---
+- name: Create Ansible remote_tmp directory
+  ansible.builtin.file:
+    path: /root/.cache/ansible/tmp
+    state: directory
+    mode: '0700'
+
 - name: Ensure firewalld is installed
   package:
     name: firewalld
