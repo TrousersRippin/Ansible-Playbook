@@ -78,14 +78,14 @@
     content: |
       Enabled: yes
       Types: deb
-      URIs: https://archive.ubuntu.com/ubuntu/
+      URIs: {{ 'https://ports.ubuntu.com/ubuntu-ports/' if ansible_architecture != 'x86_64' else 'https://archive.ubuntu.com/ubuntu/' }}
       Suites: {{ ansible_distribution_release }} {{ ansible_distribution_release }}-updates
       Components: main restricted universe multiverse
       Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 
       Enabled: yes
       Types: deb
-      URIs: https://security.ubuntu.com/ubuntu/
+      URIs: {{ 'https://ports.ubuntu.com/ubuntu-ports/' if ansible_architecture != 'x86_64' else 'https://security.ubuntu.com/ubuntu/' }}
       Suites: {{ ansible_distribution_release }}-security
       Components: main restricted universe multiverse
       Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
@@ -98,10 +98,6 @@
 - name: Upgrade distribution
   ansible.builtin.apt:
     upgrade: dist
-
-- name: Remove unused dependencies
-  ansible.builtin.apt:
-    autoremove: true
 
 # =============================================================================
 # Timezone
