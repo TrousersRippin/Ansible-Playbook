@@ -1,4 +1,4 @@
-#cd $HOME/Documents/Tech/Ansible-Playbook/debian/server_update
+#cd $HOME/Documents/Tech/Ansible-Playbook/server/update
 #
 #ansible-playbook playbook.yaml -i inventory.yaml --key-file $HOME/.ssh/id_ed25519
 

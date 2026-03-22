@@ -35,12 +35,21 @@
 # =============================================================================
 # Package manager
 # =============================================================================
-- name: Configure apt sources.list
+- name: Configure apt sources.list (Debian)
   ansible.builtin.copy:
     dest: /etc/apt/sources.list
     mode: '0644'
     content: |
       # See /etc/apt/sources.list.d/debian.sources
+  when: ansible_distribution == 'Debian'
+
+- name: Configure apt sources.list (Ubuntu)
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list
+    mode: '0644'
+    content: |
+      # See /etc/apt/sources.list.d/ubuntu.sources
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Configure debian.sources
   ansible.builtin.copy:
@@ -50,23 +59,37 @@
       Enabled: yes
       Types: deb
       URIs: https://deb.debian.org/debian/
-      Suites: trixie
-      Components: main contrib non-free non-free-firmware
-      Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
-
-      Enabled: yes
-      Types: deb
-      URIs: https://deb.debian.org/debian/
-      Suites: trixie-updates
+      Suites: {{ ansible_distribution_release }} {{ ansible_distribution_release }}-updates
       Components: main contrib non-free non-free-firmware
       Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 
       Enabled: yes
       Types: deb
       URIs: https://security.debian.org/debian-security/
-      Suites: trixie-security
+      Suites: {{ ansible_distribution_release }}-security
       Components: main contrib non-free non-free-firmware
       Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+  when: ansible_distribution == 'Debian'
+
+- name: Configure ubuntu.sources
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/ubuntu.sources
+    mode: '0644'
+    content: |
+      Enabled: yes
+      Types: deb
+      URIs: https://archive.ubuntu.com/ubuntu/
+      Suites: {{ ansible_distribution_release }} {{ ansible_distribution_release }}-updates
+      Components: main restricted universe multiverse
+      Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+      Enabled: yes
+      Types: deb
+      URIs: https://security.ubuntu.com/ubuntu/
+      Suites: {{ ansible_distribution_release }}-security
+      Components: main restricted universe multiverse
+      Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Update apt cache
   ansible.builtin.apt:
@@ -118,7 +141,6 @@
     dest: /etc/sudoers.d/{{ NEW_USER_NAME }}
     mode: '0440'
     content: |
-      Defaults    !admin_flag
       {{ NEW_USER_NAME }} ALL=(ALL) NOPASSWD:ALL
     validate: /usr/sbin/visudo -cf %s
 
@@ -185,7 +207,6 @@
     dest: /etc/ssh/sshd_config.d/60-local.conf
     mode: '0600'
     content: |
-      HostKey /etc/ssh/ssh_host_ed25519_key
       PermitRootLogin no
       PubkeyAuthentication yes
       PasswordAuthentication no
@@ -198,11 +219,9 @@
   ansible.builtin.apt:
     name:
       - bat
-      - btop
       - console-setup
       - curl
       - duf
-      - fastfetch
       - fzf
       - git
       - gpg
@@ -270,7 +289,7 @@
     value: "true"
     vtype: boolean
 
-- name: Configure unattended-upgrades
+- name: Configure unattended-upgrades (Debian)
   ansible.builtin.copy:
     dest: /etc/apt/apt.conf.d/50unattended-upgrades
     mode: '0644'
@@ -285,6 +304,24 @@
       Unattended-Upgrade::Package-Blacklist {
       };
       Unattended-Upgrade::Remove-Unused-Dependencies "true";
+  when: ansible_distribution == 'Debian'
+
+- name: Configure unattended-upgrades (Ubuntu)
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    mode: '0644'
+    content: |
+      Unattended-Upgrade::Origins-Pattern {
+          "origin=Ubuntu,archive=${distro_codename}";
+          "origin=Ubuntu,archive=${distro_codename}-updates";
+          "origin=Ubuntu,archive=${distro_codename}-security";
+          "origin=UbuntuESMApps,archive=${distro_codename}-apps-security";
+          "origin=UbuntuESM,archive=${distro_codename}-infra-security";
+      };
+      Unattended-Upgrade::Package-Blacklist {
+      };
+      Unattended-Upgrade::Remove-Unused-Dependencies "true";
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Configure automatic update schedule
   ansible.builtin.copy:

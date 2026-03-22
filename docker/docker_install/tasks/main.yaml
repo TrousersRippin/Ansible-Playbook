@@ -1,4 +1,3 @@
----
 - name: Get distribution release fact
   ansible.builtin.setup:
     gather_subset:
@@ -7,20 +6,29 @@
 
 - name: Install Docker
   ansible.builtin.package:
-    name: 
+    name:
       - docker.io
-      - docker-cli
       - docker-compose
     state: present
     update_cache: true
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Enable Docker service
+  ansible.builtin.systemd:
+    name: docker
+    enabled: true
+    state: started
 
 - name: Create a directory for container storage
   ansible.builtin.file:
     path: "/opt/stacks/"
     state: directory
     mode: '0755'
-    owner: '{{ USER }}'
-    group: '{{ USER }}'
+    owner: "{{ USER }}"
+    group: "{{ USER }}"
 
 - name: Add user to Docker group
   ansible.builtin.user:
@@ -29,14 +37,8 @@
     append: true
   notify: Restart Docker
 
-- name: Enable Docker service
-  ansible.builtin.systemd:
-    name: docker
-    enabled: true
-    state: started
-
 - name: Create a Docker network
-  docker_network:
+  community.docker.docker_network:
     name: ansible
     ipam_config:
       - subnet: "{{ SUBNET }}"
@@ -44,16 +46,13 @@
 
 - name: Verify Docker installation
   become: false
-  command: docker --version
+  ansible.builtin.command: docker --version
   register: docker_version
+  changed_when: false
 
 - name: Show installed Docker version
-  debug:
+  ansible.builtin.debug:
     msg: "Docker version: {{ docker_version.stdout }}"
-
-- name: Reload systemd daemon
-  ansible.builtin.systemd:
-    daemon_reload: true
 
 - name: Restart getty service to prevent respawn loop
   ansible.builtin.systemd:
