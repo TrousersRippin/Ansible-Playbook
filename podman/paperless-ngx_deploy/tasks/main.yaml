@@ -4,9 +4,9 @@
     name: podman
     state: present
 
-- name: Ensure Podman service is running
+- name: Ensure Podman socket is enabled
   ansible.builtin.service:
-    name: podman
+    name: podman.socket
     state: started
     enabled: true
 
@@ -20,7 +20,7 @@
 
 - name: Create a directory for container storage
   ansible.builtin.file:
-    path: "/opt/stacks/{{ APP }}"
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}"
     state: directory
     mode: '0755'
     owner: "{{ USER }}"
@@ -28,7 +28,7 @@
 
 - name: Create a directory for container consume storage
   ansible.builtin.file:
-    path: "/opt/stacks/{{ APP }}/consume"
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/consume"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
@@ -36,7 +36,7 @@
 
 - name: Create a directory for container data storage
   ansible.builtin.file:
-    path: "/opt/stacks/{{ APP }}/data"
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/data"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
@@ -44,7 +44,7 @@
 
 - name: Create a directory for container export storage
   ansible.builtin.file:
-    path: "/opt/stacks/{{ APP }}/export"
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/export"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
@@ -52,7 +52,7 @@
 
 - name: Create a directory for container media storage
   ansible.builtin.file:
-    path: "/opt/stacks/{{ APP }}/media"
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/media"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
@@ -89,16 +89,30 @@
   become_user: "{{ USER }}"
   when: image_check.rc != 0
 
+- name: Enable lingering for {{ USER }}
+  ansible.builtin.command: loginctl enable-linger {{ USER }}
+  changed_when: false
+
+- name: Get UID of {{ USER }}
+  ansible.builtin.command: id --user {{ USER }}
+  register: target_user_uid
+  changed_when: false
+
 - name: Reload systemd daemon
   ansible.builtin.command: systemctl --user daemon-reload
   become: true
   become_user: "{{ USER }}"
   environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ ANSIBLE_USER_ID }}"
+    XDG_RUNTIME_DIR: "/run/user/{{ target_user_uid.stdout }}"
 
 - name: Start container
   ansible.builtin.command: systemctl --user start {{ APP }}
   become: true
   become_user: "{{ USER }}"
   environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ ANSIBLE_USER_ID }}"
+    XDG_RUNTIME_DIR: "/run/user/{{ target_user_uid.stdout }}"
+
+- name: Restart firewalld to restore Podman network rules
+  ansible.builtin.service:
+    name: firewalld
+    state: restarted

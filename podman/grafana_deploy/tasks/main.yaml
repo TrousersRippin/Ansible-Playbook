@@ -4,9 +4,9 @@
     name: podman
     state: present
 
-- name: Ensure Podman service is running
+- name: Ensure Podman socket is enabled
   ansible.builtin.service:
-    name: podman
+    name: podman.socket
     state: started
     enabled: true
 
@@ -20,7 +20,7 @@
 
 - name: Create a directory for container config storage
   ansible.builtin.file:
-    path: "/opt/stacks/{{ APP }}/config"
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/config"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
@@ -28,7 +28,7 @@
 
 - name: Create a directory for container dashboard storage
   ansible.builtin.file:
-    path: "/opt/stacks/{{ APP }}/dashboards"
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/dashboards"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
@@ -36,7 +36,7 @@
 
 - name: Create a directory for container data storage
   ansible.builtin.file:
-    path: "/opt/stacks/{{ APP }}/data"
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/data"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
@@ -44,7 +44,7 @@
 
 - name: Create a directory for container provisioning storage
   ansible.builtin.file:
-    path: "/opt/stacks/{{ APP }}/provisioning"
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
@@ -52,7 +52,7 @@
 
 - name: Create a directory for container provisioning-alerting storage
   ansible.builtin.file:
-    path: "/opt/stacks/{{ APP }}/provisioning/alerting"
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/alerting"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
@@ -60,7 +60,7 @@
 
 - name: Create a directory for container provisioning-dashboards storage
   ansible.builtin.file:
-    path: "/opt/stacks/{{ APP }}/provisioning/dashboards"
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/dashboards"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
@@ -68,7 +68,7 @@
 
 - name: Create a directory for container provisioning-datasources storage
   ansible.builtin.file:
-    path: "/opt/stacks/{{ APP }}/provisioning/datasources"
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/datasources"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
@@ -76,7 +76,7 @@
 
 - name: Create a directory for container provisioning-plugins storage
   ansible.builtin.file:
-    path: "/opt/stacks/{{ APP }}/provisioning/plugins"
+    path: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/plugins"
     state: directory
     mode: '0777'
     owner: "{{ USER }}"
@@ -85,7 +85,7 @@
 - name: Add config file
   ansible.builtin.copy:
     src: "files/grafana.ini"
-    dest: "/opt/stacks/{{ APP }}/config/grafana.ini"
+    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/config/grafana.ini"
     mode: '0644'
     owner: "{{ USER }}"
     group: "{{ USER }}"
@@ -93,7 +93,7 @@
 - name: Add dashboards config file
   ansible.builtin.copy:
     src: "files/dashboards.yaml"
-    dest: "/opt/stacks/{{ APP }}/provisioning/dashboards/dashboards.yaml"
+    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/dashboards/dashboards.yaml"
     mode: '0644'
     owner: "{{ USER }}"
     group: "{{ USER }}"
@@ -101,7 +101,7 @@
 - name: Add datasources config file
   ansible.builtin.copy:
     src: "files/datasources.yaml"
-    dest: "/opt/stacks/{{ APP }}/provisioning/datasources/datasources.yaml"
+    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/provisioning/datasources/datasources.yaml"
     mode: '0644'
     owner: "{{ USER }}"
     group: "{{ USER }}"
@@ -109,7 +109,7 @@
 - name: Add podman-exporter dashboard file
   ansible.builtin.copy:
     src: "files/podman-exporter.json"
-    dest: "/opt/stacks/{{ APP }}/dashboards/podman-exporter.json"
+    dest: "/home/{{ USER }}/containers/storage/{{ APP }}/dashboards/podman-exporter.json"
     mode: '0644'
     owner: "{{ USER }}"
     group: "{{ USER }}"
@@ -137,16 +137,30 @@
   become_user: "{{ USER }}"
   when: image_check.rc != 0
 
+- name: Enable lingering for {{ USER }}
+  ansible.builtin.command: loginctl enable-linger {{ USER }}
+  changed_when: false
+
+- name: Get UID of {{ USER }}
+  ansible.builtin.command: id --user {{ USER }}
+  register: target_user_uid
+  changed_when: false
+
 - name: Reload systemd daemon
   ansible.builtin.command: systemctl --user daemon-reload
   become: true
   become_user: "{{ USER }}"
   environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ ANSIBLE_USER_ID }}"
+    XDG_RUNTIME_DIR: "/run/user/{{ target_user_uid.stdout }}"
 
 - name: Start container
   ansible.builtin.command: systemctl --user start {{ APP }}
   become: true
   become_user: "{{ USER }}"
   environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ ANSIBLE_USER_ID }}"
+    XDG_RUNTIME_DIR: "/run/user/{{ target_user_uid.stdout }}"
+
+- name: Restart firewalld to restore Podman network rules
+  ansible.builtin.service:
+    name: firewalld
+    state: restarted

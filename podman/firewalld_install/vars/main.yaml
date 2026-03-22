@@ -3,28 +3,32 @@ firewalld_allowed_ports:
   #- 22/tcp       # SSH
   #- 80/tcp       # HTTP
   #- 443/tcp      # HTTPS
+  #- 2342/tcp     # Photoprism
   #- 2368/tcp     # Ghost
   #- 3000/tcp     # Gitea
   #- 3000/tcp     # Homepage
   #- 3100/tcp     # Loki
   #- 3210/tcp     # Umami
+  #- 3306/tcp     # MariaDB
   #- 3333/tcp     # Grafana
   #- 5000/tcp     # Kavita
   #- 5055/tcp     # Seerr
   #- 5216/tcp     # MySpeed
   #- 5230/tcp     # Memos
+  #- 5432/tcp     # PostgreSQL
   #- 5800/tcp     # MKVToolNix
   #- 6379/tcp     # Redis
   #- 6767/tcp     # Bazarr
   #- 7878/tcp     # Radarr
   #- 8000/tcp     # Paperless-ngx
-  #- 8001/tcp     # Gotify
+  - 8001/tcp     # Gotify
   - 8005/tcp     # Filebrowser
   - 8008/tcp     # Dozzle
   #- 8096/tcp     # Jellyfin
   #- 8181/tcp     # Tautulli
   #- 8384/tcp     # Syncthing
   #- 8877/tcp     # Vaultwarden
+  #- 8899/tcp     # Gatis
   #- 8989/tcp     # Sonarr
   #- 9092/tcp     # Prometheus
   #- 9091/tcp     # Transmission

@@ -1,70 +1,96 @@
----
 - name: Install Podman
   ansible.builtin.package:
     name: podman
-    state: latest
-    update_cache: true
+    state: present
 
 - name: Create a directory for container files
   ansible.builtin.file:
-    path: "/home/{{ USER }}/.config/containers/systemd/"
+    path: "/home/{{ ROOTLESSUSER }}/.config/containers/systemd/"
     state: directory
     mode: '0755'
-    owner: '{{ USER }}'
-    group: '{{ USER }}'
+    owner: "{{ ROOTLESSUSER }}"
+    group: "{{ ROOTLESSUSER }}"
 
 - name: Create a directory for container storage
   ansible.builtin.file:
-    path: "/opt/stacks/"
+    path: "/home/{{ ROOTLESSUSER }}/containers/storage/"
     state: directory
     mode: '0755'
-    owner: '{{ USER }}'
-    group: '{{ USER }}'
+    owner: "{{ ROOTLESSUSER }}"
+    group: "{{ ROOTLESSUSER }}"
 
-- name: Enable and start Podman services
+- name: Enable and start Podman system services
   ansible.builtin.systemd:
     name: "{{ item }}"
     enabled: true
     state: started
+    daemon_reload: true
   loop:
     - podman.socket
     - podman.service
-    - podman-auto-update.service
     - podman-auto-update.timer
+
+- name: Enable Podman system oneshot services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    daemon_reload: true
+  loop:
+    - podman-auto-update.service
     - podman-clean-transient.service
     - podman-restart.service
 
-- name: Enable and start Podman --user services
-  ansible.builtin.command: systemctl --user enable --now "{{ item }}"
+- name: Enable and start Podman user services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+    scope: user
+    daemon_reload: true
   become: true
-  become_user: "{{ USER }}"
+  become_user: "{{ ROOTLESSUSER }}"
   environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ ANSIBLE_USER_ID }}"
+    XDG_RUNTIME_DIR: "/run/user/{{ ANSIBLEUSERID }}"
   loop:
     - podman.socket
     - podman.service
-    - podman-auto-update.service
     - podman-auto-update.timer
+
+- name: Enable Podman user oneshot services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    scope: user
+    daemon_reload: true
+  become: true
+  become_user: "{{ ROOTLESSUSER }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ ANSIBLEUSERID }}"
+  loop:
+    - podman-auto-update.service
     - podman-clean-transient.service
     - podman-restart.service
 
-- name: Enable linger for user
-  ansible.builtin.command: loginctl enable-linger "{{ USER }}"
+- name: Enable linger for {{ ROOTLESSUSER }}
+  ansible.builtin.command: loginctl enable-linger "{{ ROOTLESSUSER }}"
   become: true
+  changed_when: false
 
 - name: Create a Podman network
   ansible.builtin.template:
     src: network.j2
-    dest: "/home/{{ USER }}/.config/containers/systemd/{{ NETWORK }}.network"
+    dest: "/home/{{ ROOTLESSUSER }}/.config/containers/systemd/{{ NETWORK }}.network"
     mode: '0644'
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
+    owner: "{{ ROOTLESSUSER }}"
+    group: "{{ ROOTLESSUSER }}"
 
 - name: Verify Podman installation
-  become: false
-  command: podman --version
+  ansible.builtin.command: podman --version
+  become: true
+  become_user: "{{ ROOTLESSUSER }}"
   register: podman_version
+  changed_when: false
 
 - name: Show installed Podman version
-  debug:
+  ansible.builtin.debug:
     msg: "Podman version: {{ podman_version.stdout }}"
