@@ -1,9 +1,9 @@
-#cd $HOME/Documents/Tech/Ansible-Playbook/server/install
-#
 #ansible-vault encrypt $HOME/Documents/Tech/Ansible-Playbook/server/install/vars/main.yaml
 #ansible-vault decrypt $HOME/Documents/Tech/Ansible-Playbook/server/install/vars/main.yaml
-#
+
+#cd $HOME/Documents/Tech/Ansible-Playbook/server/install
 #ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml --ask-become-pass --key-file $HOME/.ssh/id_ed25519
+
 ---
 - name: Server install
   hosts: virtual_machines

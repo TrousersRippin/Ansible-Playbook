@@ -1,8 +1,7 @@
-#cd $HOME/Documents/Tech/Ansible-Playbook/podman
-
 #ansible-vault encrypt /Users/troy/Documents/Tech/Ansible-Playbook/podman/podman_install/vars/main.yaml
 #ansible-vault decrypt /Users/troy/Documents/Tech/Ansible-Playbook/podman/podman_install/vars/main.yaml
 
+#cd $HOME/Documents/Tech/Ansible-Playbook/podman
 #ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml --ask-become-pass --key-file $HOME/.ssh/id_ed25519
 #ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml
 
@@ -13,7 +12,6 @@
   roles:
     - podman_install
     - firewalld_install
-    #- alertmanager_deploy
     #- audiobookshelf_deploy
     #- bazarr_deploy
     - dozzle_deploy
@@ -21,7 +19,7 @@
     #- gatus_deploy
     #- ghost_deploy
     #- gitea_deploy
-    - gotify_deploy
+    #- gotify_deploy
     #- grafana_deploy
     #- homepage_deploy
     #- jellyfin_deploy

@@ -1,18 +1,18 @@
 ---
 bare_metal:
-#  vars:
-#    ansible_become: true
-#    ansible_become_method: sudo
-#    ansible_python_interpreter: /usr/bin/python3
-#  hosts:
-#    zimacube:
-#      ansible_host: 10.1.1.11
-#    node-01:
-#      ansible_host: 10.1.1.12
-#    node-02:
-#      ansible_host: 10.1.1.13
-#    node-03:
-#      ansible_host: 10.1.1.14
+  vars:
+    ansible_become: true
+    ansible_become_method: sudo
+    ansible_python_interpreter: /usr/bin/python3
+  hosts:
+    zimacube:
+      ansible_host: 10.1.1.11
+    node-01:
+      ansible_host: 10.1.1.12
+    node-02:
+      ansible_host: 10.1.1.13
+    node-03:
+      ansible_host: 10.1.1.14
 
 virtual_machines:
   vars:
@@ -20,12 +20,12 @@ virtual_machines:
     ansible_become_method: sudo
     ansible_python_interpreter: /usr/bin/python3
   hosts:
-#    technitium:
-#      ansible_host: 10.1.1.15
-#    zabbix:
-#      ansible_host: 10.1.1.16
-#    minecraft:
-#      ansible_host: 10.1.1.17
+    technitium:
+      ansible_host: 10.1.1.15
+    zabbix:
+      ansible_host: 10.1.1.16
+    minecraft:
+      ansible_host: 10.1.1.17
     debian:
       ansible_host: 10.1.1.18
     ubuntu:

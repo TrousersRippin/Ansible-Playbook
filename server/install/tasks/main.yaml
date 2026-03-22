@@ -357,7 +357,7 @@
       LLMNR=no
       Cache=yes
       CacheFromLocalhost=no
-      DNSStubListener=no
+      DNSStubListener={{ 'no' if dns_server | default(false) | bool else 'yes' }}
       ReadEtcHosts=yes
       ResolveUnicastSingleLabel=no
       StaleRetentionSec=0
@@ -366,6 +366,13 @@
   ansible.builtin.service:
     name: systemd-resolved
     enabled: true
+
+- name: Configure resolv.conf symlink
+  ansible.builtin.file:
+    src: "{{ '/run/systemd/resolve/resolv.conf' if dns_server | default(false) | bool else '/run/systemd/resolve/stub-resolv.conf' }}"
+    dest: /etc/resolv.conf
+    state: link
+    force: true
 
 # =============================================================================
 # systemd-networkd

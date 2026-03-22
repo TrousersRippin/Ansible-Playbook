@@ -1,9 +1,3 @@
-- name: Create Ansible remote_tmp directory
-  ansible.builtin.file:
-    path: /root/.cache/ansible/tmp
-    state: directory
-    mode: '0700'
-
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
@@ -11,7 +5,7 @@
 
 - name: Upgrade all packages
   ansible.builtin.apt:
-    upgrade: full
+    upgrade: dist
   register: apt_upgrade_result
   notify: Apt upgrade summary
 
@@ -40,6 +34,7 @@
     pre_reboot_delay: "{{ reboot_pre_delay }}"
     post_reboot_delay: "{{ reboot_post_delay }}"
     test_command: uptime
+  become: true
   when:
     - reboot_required_file.stat.exists
     - allow_reboot | bool
