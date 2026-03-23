@@ -551,11 +551,13 @@
 # Console
 # =============================================================================
 - name: Configure /etc/issue
+  vars:
+    os_color: "{{ '33' if ansible_distribution == 'Ubuntu' else '32' }}"
   ansible.builtin.copy:
     dest: /etc/issue
     mode: '0644'
     content: |
-      \e[32m\S\e[0m
+      \e[{{ os_color }}m\S\e[0m
       \e[37mKernel \r\e[0m
       \e[90m\d \t\e[0m
       \e[31m{{ ansible_default_ipv4.interface }}:\e[0m \4{{ '{' }}{{ ansible_default_ipv4.interface }}{{ '}' }}
