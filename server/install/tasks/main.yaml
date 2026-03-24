@@ -137,6 +137,7 @@
     dest: /etc/sudoers.d/{{ NEW_USER_NAME }}
     mode: '0440'
     content: |
+      Defaults env_keep += "HOME"
       {{ NEW_USER_NAME }} ALL=(ALL) NOPASSWD:ALL
     validate: /usr/sbin/visudo -cf %s
 
