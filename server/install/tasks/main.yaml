@@ -132,13 +132,14 @@
     append: true
     password: "{{ hashed_password }}"
 
-- name: Configure sudo privileges for new user
+- name: Configure sudo privileges
   ansible.builtin.copy:
-    dest: /etc/sudoers.d/{{ NEW_USER_NAME }}
+    dest: /etc/sudoers.d/admin
     mode: '0440'
     content: |
-      Defaults env_keep += "HOME"
-      {{ NEW_USER_NAME }} ALL=(ALL) NOPASSWD:ALL
+      Defaults  !use_pty
+      Defaults  env_keep += "HOME"
+      %sudo     ALL=(ALL) NOPASSWD:ALL
     validate: /usr/sbin/visudo -cf %s
 
 # =============================================================================
