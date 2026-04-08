@@ -7,7 +7,6 @@ After=network-online.target local-fs.target podman.socket
 ContainerName={{ APP }}
 Image={{ IMAGE_NAME }}:{{ IMAGE_TAG }}
 AutoUpdate=registry
-Timezone=local
 
 EnvironmentFile={{ APP }}.env
 
