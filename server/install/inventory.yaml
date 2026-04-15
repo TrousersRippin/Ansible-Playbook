@@ -5,15 +5,15 @@ virtual_machines:
     ansible_become_method: sudo
     ansible_python_interpreter: /usr/bin/python3
   hosts:
-#    technitium:
-#      ansible_host: 10.1.1.15
-#      ansible_user: root
-#      ansible_become: false
-#    minecraft:
-#      ansible_host: 10.1.1.16
-#      ansible_user: root
-#      ansible_become: false
-    debian:
+    technitium:
+      ansible_host: 10.1.1.15
+    minecraft:
+      ansible_host: 10.1.1.16
+    nextcloud:
       ansible_host: 10.1.1.17
-    ubuntu:
+    debian-01:
       ansible_host: 10.1.1.18
+    debian-02:
+      ansible_host: 10.1.1.19
+    debian-03:
+      ansible_host: 10.1.1.20

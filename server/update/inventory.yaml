@@ -7,18 +7,12 @@ bare_metal:
   hosts:
     zimacube:
       ansible_host: 10.1.1.11
-    pve-01:
+    node-01:
       ansible_host: 10.1.1.12
-      ansible_user: root
-      ansible_become: false
-    pve-02:
+    node-02:
       ansible_host: 10.1.1.13
-      ansible_user: root
-      ansible_become: false
-    pve-03:
+    node-03:
       ansible_host: 10.1.1.14
-      ansible_user: root
-      ansible_become: false
 virtual_machines:
   vars:
     ansible_become: true
@@ -27,13 +21,13 @@ virtual_machines:
   hosts:
     technitium:
       ansible_host: 10.1.1.15
-      ansible_user: root
-      ansible_become: false
     minecraft:
       ansible_host: 10.1.1.16
-      ansible_user: root
-      ansible_become: false
-    debian:
+    nextcloud:
       ansible_host: 10.1.1.17
-    ubuntu:
+    debian-01:
       ansible_host: 10.1.1.18
+    debian-02:
+      ansible_host: 10.1.1.19
+    debian-03:
+      ansible_host: 10.1.1.20
