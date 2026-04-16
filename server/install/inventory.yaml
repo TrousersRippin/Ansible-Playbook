@@ -9,7 +9,7 @@ virtual_machines:
       ansible_host: 10.1.1.15
     minecraft:
       ansible_host: 10.1.1.16
-    nextcloud:
+    pgadmin:
       ansible_host: 10.1.1.17
     debian-01:
       ansible_host: 10.1.1.18
