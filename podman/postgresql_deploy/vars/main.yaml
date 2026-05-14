@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: docker.io/library/postgres
+IMAGE_TAG: alpine
+APP: postgres
+NETWORK: ansible
+PORT_NUMBER: 5432
+USER: troy
+ANSIBLE_USER_ID: 1000

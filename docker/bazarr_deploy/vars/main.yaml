@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: lscr.io/linuxserver/bazarr
+IMAGE_TAG: latest
+APP: bazarr
+NETWORK: ansible
+PORT_NUMBER: 6767
+USER: troy

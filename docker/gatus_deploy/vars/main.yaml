@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: ghcr.io/twin/gatus
+IMAGE_TAG: latest
+APP: gatus
+NETWORK: ansible
+PORT_NUMBER: 8899
+USER: troy

@@ -1,0 +1,6 @@
+[Unit]
+Description=MariaDB Data Volume
+
+[Volume]
+Label=app=mariadb-data
+VolumeName=mariadb-data

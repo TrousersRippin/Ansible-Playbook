@@ -1,0 +1,10 @@
+---
+- name: Apt upgrade summary
+  ansible.builtin.debug:
+    msg: >-
+      {{ inventory_hostname }}: {{ apt_upgrade_result.stdout_lines
+      | select('match', '^[0-9]+ upgraded')
+      | list
+      | first
+      | default('No upgrade output available') }}
+  listen: Apt upgrade summary

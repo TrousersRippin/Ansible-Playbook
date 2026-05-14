@@ -1,0 +1,9 @@
+---
+IMAGE_NAME: docker.io/technitium/dns-server
+IMAGE_TAG: latest
+APP: technitium
+NETWORK: ansible
+PORT_NUMBER1: 5380
+PORT_NUMBER2: 53
+PORT_NUMBER3: 53443
+USER: troy

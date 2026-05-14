@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: lscr.io/linuxserver/transmission
+IMAGE_TAG: latest
+APP: transmission
+NETWORK: ansible
+PORT_NUMBER1: 9091
+PORT_NUMBER2: 51413
+USER: troy

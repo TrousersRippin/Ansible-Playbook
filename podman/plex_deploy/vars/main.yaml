@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: docker.io/plexinc/pms-docker
+IMAGE_TAG: latest
+APP: plex
+NETWORK: ansible
+PORT_NUMBER: 32400
+USER: troy
+ANSIBLE_USER_ID: 1000

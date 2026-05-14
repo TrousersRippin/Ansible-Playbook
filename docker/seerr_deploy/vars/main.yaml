@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: ghcr.io/seerr-team/seerr
+IMAGE_TAG: latest
+APP: seerr
+NETWORK: ansible
+PORT_NUMBER: 5055
+USER: troy

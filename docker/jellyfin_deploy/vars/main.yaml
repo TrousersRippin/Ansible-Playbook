@@ -1,0 +1,7 @@
+---
+IMAGE_NAME: docker.io/jellyfin/jellyfin
+IMAGE_TAG: latest
+APP: jellyfin
+NETWORK: ansible
+PORT_NUMBER: 8096
+USER: troy

@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: 
+IMAGE_TAG: latest
+APP: 
+NETWORKNAME: ansible
+PORT_NUMBER: 
+USER: troy
+ANSIBLE_USER_ID: 1000

@@ -1,0 +1,11 @@
+---
+virtual_machines:
+  vars:
+    ansible_become: true
+    ansible_become_method: sudo
+    ansible_python_interpreter: /usr/bin/python3
+  hosts:
+    technitium:
+      ansible_host: 10.1.1.15
+    ubuntu:
+      ansible_host: 10.1.1.16

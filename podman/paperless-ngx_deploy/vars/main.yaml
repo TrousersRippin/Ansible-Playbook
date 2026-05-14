@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: docker.io/paperlessngx/paperless-ngx
+IMAGE_TAG: latest
+APP: paperless
+NETWORK: ansible
+PORT_NUMBER: 8000
+USER: troy
+ANSIBLE_USER_ID: 1000

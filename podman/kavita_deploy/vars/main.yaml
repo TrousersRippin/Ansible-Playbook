@@ -1,0 +1,8 @@
+---
+IMAGE_NAME: docker.io/jvmilazz0/kavita
+IMAGE_TAG: latest
+APP: kavita
+NETWORK: ansible
+PORT_NUMBER: 5000
+USER: troy
+ANSIBLE_USER_ID: 1000

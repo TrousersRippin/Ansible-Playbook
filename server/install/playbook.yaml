@@ -1,0 +1,15 @@
+#ansible-vault encrypt $HOME/Documents/Tech/Configuration/Ansible-Playbook/server/install/vars/main.yaml
+#ansible-vault decrypt $HOME/Documents/Tech/Configuration/Ansible-Playbook/server/install/vars/main.yaml
+
+#cd $HOME/Documents/Tech/Configuration/Ansible-Playbook/server/install
+#ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml --ask-become-pass --key-file $HOME/.ssh/id_ed25519
+
+---
+- name: Server install
+  hosts: virtual_machines
+  vars_files:
+    - vars/main.yaml
+  tasks:
+    - ansible.builtin.import_tasks: tasks/main.yaml
+  handlers:
+    - ansible.builtin.import_tasks: handlers/main.yaml

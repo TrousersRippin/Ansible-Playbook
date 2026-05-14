@@ -1,0 +1,26 @@
+---
+services:
+  {{ APP }}:
+    image: {{ IMAGE_NAME }}:{{ IMAGE_TAG }}
+    container_name: {{ APP }}
+    hostname: {{ APP }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - DOZZLE_ADDR=:8008
+      - DOZZLE_ENABLE_ACTIONS=true
+      - DOZZLE_HOSTNAME={{ HOSTNAME }}
+      - DOZZLE_NO_ANALYTICS=true
+    ports:
+      - {{ PORT_NUMBER }}:{{ PORT_NUMBER }}/tcp
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - {{ NETWORK }}
+
+networks:
+  {{ NETWORK }}:
+    external: true

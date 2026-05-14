@@ -1,0 +1,48 @@
+#ansible-vault encrypt /Users/troy/Documents/Tech/Configuration/Ansible-Playbook/podman/podman_install/vars/main.yaml
+#ansible-vault decrypt /Users/troy/Documents/Tech/Configuration/Ansible-Playbook/podman/podman_install/vars/main.yaml
+
+#cd $HOME/Documents/Tech/Configuration/Ansible-Playbook/podman
+#ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml --ask-become-pass --key-file $HOME/.ssh/id_ed25519
+#ansible-playbook --ask-vault-password playbook.yaml -i inventory.yaml
+
+---
+- name: Install Podman Homelab
+  hosts: virtual_machines
+  become: true
+  roles:
+    - podman_install
+    - firewalld_install
+    #- audiobookshelf_deploy
+    #- bazarr_deploy
+    - dozzle_deploy
+    - filebrowser_deploy
+    #- gatus_deploy
+    #- ghost_deploy
+    #- gitea_deploy
+    #- gotify_deploy
+    #- grafana_deploy
+    #- homepage_deploy
+    #- jellyfin_deploy
+    #- kavita_deploy
+    #- loki_deploy
+    #- mariadb_deploy
+    #- memos_deploy
+    #- mkvtoolnix_deploy
+    #- myspeed_deploy
+    #- node-exporter_deploy
+    #- paperless-ngx_deploy
+    #- photoprism_deploy
+    #- plex_deploy
+    #- postgresql_deploy
+    #- prometheus-podman-exporter_deploy
+    #- prometheus_deploy
+    #- prowlarr_deploy
+    #- radarr_deploy
+    #- redis_deploy
+    #- seerr_deploy
+    #- sonarr_deploy
+    #- syncthing_deploy
+    #- tautulli_deploy
+    #- transmission_deploy
+    #- umami_deploy
+    #- vaultwarden_deploy

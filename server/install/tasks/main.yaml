@@ -1,0 +1,657 @@
+---
+- name: Create Ansible remote_tmp directory
+  ansible.builtin.file:
+    path: /root/.cache/ansible/tmp
+    state: directory
+    mode: '0700'
+
+# =============================================================================
+# Environment detection
+# =============================================================================
+- name: Set container flag
+  ansible.builtin.set_fact:
+    is_lxc: "{{ ansible_virtualization_type == 'lxc' }}"
+
+- name: Check for systemd-boot EFI directory
+  ansible.builtin.stat:
+    path: /boot/efi/loader
+  register: efi_loader_dir
+
+# =============================================================================
+# System
+# =============================================================================
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: Configure /etc/hosts
+  ansible.builtin.copy:
+    dest: /etc/hosts
+    mode: '0644'
+    content: |
+      127.0.0.1   localhost
+      127.0.1.1   {{ inventory_hostname }}   {{ HOST }}
+
+# =============================================================================
+# Package manager
+# =============================================================================
+- name: Configure apt sources.list (Debian)
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list
+    mode: '0644'
+    content: |
+      # See /etc/apt/sources.list.d/debian.sources
+  when: ansible_distribution == 'Debian'
+
+- name: Configure apt sources.list (Ubuntu)
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list
+    mode: '0644'
+    content: |
+      # See /etc/apt/sources.list.d/ubuntu.sources
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Configure debian.sources
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/debian.sources
+    mode: '0644'
+    content: |
+      Enabled: yes
+      Types: deb
+      URIs: https://deb.debian.org/debian/
+      Suites: {{ ansible_distribution_release }} {{ ansible_distribution_release }}-updates
+      Components: main contrib non-free non-free-firmware
+      Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+      Enabled: yes
+      Types: deb
+      URIs: https://security.debian.org/debian-security/
+      Suites: {{ ansible_distribution_release }}-security
+      Components: main contrib non-free non-free-firmware
+      Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+  when: ansible_distribution == 'Debian'
+
+- name: Configure ubuntu.sources
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/ubuntu.sources
+    mode: '0644'
+    content: |
+      Enabled: yes
+      Types: deb
+      URIs: {{ 'https://ports.ubuntu.com/ubuntu-ports/' if ansible_architecture != 'x86_64' else 'https://archive.ubuntu.com/ubuntu/' }}
+      Suites: {{ ansible_distribution_release }} {{ ansible_distribution_release }}-updates
+      Components: main restricted universe multiverse
+      Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+      Enabled: yes
+      Types: deb
+      URIs: {{ 'https://ports.ubuntu.com/ubuntu-ports/' if ansible_architecture != 'x86_64' else 'https://security.ubuntu.com/ubuntu/' }}
+      Suites: {{ ansible_distribution_release }}-security
+      Components: main restricted universe multiverse
+      Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Upgrade distribution
+  ansible.builtin.apt:
+    upgrade: dist
+
+# =============================================================================
+# Timezone
+# =============================================================================
+- name: Set timezone
+  ansible.builtin.timezone:
+    name: "{{ TIMEZONE }}"
+
+# =============================================================================
+# User
+# =============================================================================
+- name: Generate password hash
+  ansible.builtin.set_fact:
+    hashed_password: "{{ NEW_USER_PASSWORD | password_hash('sha512') }}"
+
+- name: Create group for new user
+  ansible.builtin.group:
+    name: "{{ NEW_USER_NAME }}"
+    gid: 1000
+    state: present
+
+- name: Add user
+  ansible.builtin.user:
+    name: "{{ NEW_USER_NAME }}"
+    comment: "{{ NEW_USER_FULLNAME }}"
+    uid: 1000
+    group: "{{ NEW_USER_NAME }}"
+    shell: /bin/zsh
+    create_home: true
+    state: present
+    groups: sudo
+    append: true
+    password: "{{ hashed_password }}"
+
+#- name: Configure sudo privileges
+#  ansible.builtin.copy:
+#    dest: /etc/sudoers.d/admin
+#    mode: '0440'
+#    content: |
+#      Defaults  !use_pty
+#      Defaults  env_keep += "HOME"
+#      %sudo     ALL=(ALL) NOPASSWD:ALL
+#    validate: /usr/sbin/visudo -cf %s
+
+# =============================================================================
+# SSH
+# =============================================================================
+- name: Create SSH directory for root user
+  ansible.builtin.file:
+    path: /root/.ssh
+    state: directory
+    mode: '0700'
+
+- name: Add SSH key to root user's authorized_keys
+  ansible.builtin.authorized_key:
+    user: root
+    key: "{{ lookup('file', SSH_KEY_PATH) }}"
+    state: present
+
+- name: Create .ssh directory for new user
+  ansible.builtin.file:
+    path: /home/{{ NEW_USER_NAME }}/.ssh
+    state: directory
+    owner: "{{ NEW_USER_NAME }}"
+    group: "{{ NEW_USER_NAME }}"
+    mode: '0700'
+
+- name: Add SSH key to new user's authorized_keys
+  ansible.builtin.authorized_key:
+    user: "{{ NEW_USER_NAME }}"
+    key: "{{ lookup('file', SSH_KEY_PATH) }}"
+    state: present
+
+- name: Create SSH client config for new user
+  ansible.builtin.copy:
+    dest: /home/{{ NEW_USER_NAME }}/.ssh/config
+    owner: "{{ NEW_USER_NAME }}"
+    group: "{{ NEW_USER_NAME }}"
+    mode: '0600'
+    content: |
+      Host *
+          AddKeysToAgent yes
+          IdentityFile ~/.ssh/id_ed25519
+          Port 22
+          User {{ NEW_USER_NAME }}
+
+      Host {{ CLIENT }}
+          HostName {{ CLIENT_IP }}
+
+- name: Generate SSH keypair for new user
+  ansible.builtin.openssh_keypair:
+    path: /home/{{ NEW_USER_NAME }}/.ssh/id_ed25519
+    type: ed25519
+    comment: "{{ HOST }}"
+    owner: "{{ NEW_USER_NAME }}"
+    group: "{{ NEW_USER_NAME }}"
+    mode: '0600'
+    force: false
+
+# =============================================================================
+# SSHD
+# =============================================================================
+- name: Create custom SSHD config
+  ansible.builtin.copy:
+    dest: /etc/ssh/sshd_config.d/60-local.conf
+    mode: '0600'
+    content: |
+      PermitRootLogin no
+      PubkeyAuthentication yes
+      PasswordAuthentication no
+  notify: Restart ssh
+
+# =============================================================================
+# Packages
+# =============================================================================
+- name: Install packages
+  ansible.builtin.apt:
+    name:
+      - bat
+      - console-setup
+      - curl
+      - duf
+      - fzf
+      - git
+      - gpg
+      - htop
+      - systemd-timesyncd
+      - tree
+      - vim
+      - zsh
+    state: present
+
+- name: Install security packages
+  ansible.builtin.apt:
+    name:
+      - fail2ban
+      - unattended-upgrades
+      #- ufw
+    state: present
+
+# =============================================================================
+# Fail2ban
+# =============================================================================
+- name: Create fail2ban jail.local
+  ansible.builtin.copy:
+    dest: /etc/fail2ban/jail.local
+    mode: '0644'
+    content: |
+      [DEFAULT]
+      ignoreip = 127.0.0.1/8 ::1 {{ CLIENT_IP }}
+      bantime = 3600
+      findtime = 600
+      maxretry = 5
+
+      [sshd]
+      enabled = true
+      backend = auto
+
+- name: Start and enable fail2ban
+  ansible.builtin.service:
+    name: fail2ban
+    state: started
+    enabled: true
+
+# =============================================================================
+# UFW
+# =============================================================================
+#- name: Allow OpenSSH through firewall
+#  ansible.builtin.ufw:
+#    rule: allow
+#    name: OpenSSH
+#  when: not is_lxc
+#
+#- name: Enable UFW with default deny policy
+#  ansible.builtin.ufw:
+#    state: enabled
+#    policy: deny
+#  when: not is_lxc
+
+# =============================================================================
+# Unattended upgrades
+# =============================================================================
+- name: Enable unattended-upgrades via debconf
+  ansible.builtin.debconf:
+    name: unattended-upgrades
+    question: unattended-upgrades/enable_auto_updates
+    value: "true"
+    vtype: boolean
+
+- name: Configure unattended-upgrades (Debian)
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    mode: '0644'
+    content: |
+      Unattended-Upgrade::Origins-Pattern {
+          "origin=Debian,codename=${distro_codename}-updates";
+          "origin=Debian,codename=${distro_codename}-proposed-updates";
+          "origin=Debian,codename=${distro_codename},label=Debian";
+          "origin=Debian,codename=${distro_codename},label=Debian-Security";
+          "origin=Debian,codename=${distro_codename}-security,label=Debian-Security";
+      };
+      Unattended-Upgrade::Package-Blacklist {
+      };
+      Unattended-Upgrade::Remove-Unused-Dependencies "true";
+  when: ansible_distribution == 'Debian'
+
+- name: Configure unattended-upgrades (Ubuntu)
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    mode: '0644'
+    content: |
+      Unattended-Upgrade::Origins-Pattern {
+          "origin=Ubuntu,archive=${distro_codename}";
+          "origin=Ubuntu,archive=${distro_codename}-updates";
+          "origin=Ubuntu,archive=${distro_codename}-security";
+          "origin=UbuntuESMApps,archive=${distro_codename}-apps-security";
+          "origin=UbuntuESM,archive=${distro_codename}-infra-security";
+      };
+      Unattended-Upgrade::Package-Blacklist {
+      };
+      Unattended-Upgrade::Remove-Unused-Dependencies "true";
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Configure automatic update schedule
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    mode: '0644'
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+
+- name: Start and enable unattended-upgrades
+  ansible.builtin.service:
+    name: unattended-upgrades
+    state: started
+    enabled: true
+
+# =============================================================================
+# systemd-resolved
+# =============================================================================
+- name: Create systemd-resolved config directory
+  ansible.builtin.file:
+    path: /etc/systemd/resolved.conf.d
+    state: directory
+    mode: '0755'
+
+- name: Configure systemd-resolved
+  ansible.builtin.copy:
+    dest: /etc/systemd/resolved.conf.d/resolved.conf
+    mode: '0644'
+    content: |
+      [Resolve]
+      DNS={{ NAMESERVER }}
+      FallbackDNS=1.1.1.1 1.0.0.1
+      Domains={{ DOMAIN }}
+      DNSSEC=allow-downgrade
+      DNSOverTLS=no
+      MulticastDNS=yes
+      LLMNR=no
+      Cache=yes
+      CacheFromLocalhost=no
+      DNSStubListener={{ 'no' if dns_server | default(false) | bool else 'yes' }}
+      ReadEtcHosts=yes
+      ResolveUnicastSingleLabel=no
+      StaleRetentionSec=0
+
+- name: Enable systemd-resolved
+  ansible.builtin.service:
+    name: systemd-resolved
+    enabled: true
+
+- name: Configure resolv.conf symlink
+  ansible.builtin.file:
+    src: "{{ '/run/systemd/resolve/resolv.conf' if dns_server | default(false) | bool else '/run/systemd/resolve/stub-resolv.conf' }}"
+    dest: /etc/resolv.conf
+    state: link
+    force: true
+
+# =============================================================================
+# systemd-networkd
+# =============================================================================
+- name: Ensure /etc/network directory exists
+  ansible.builtin.file:
+    path: /etc/network
+    state: directory
+    mode: '0755'
+  when: not is_lxc
+
+- name: Stub out /etc/network/interfaces
+  ansible.builtin.copy:
+    dest: /etc/network/interfaces
+    mode: '0644'
+    content: |
+      # This system is configured to use systemd-networkd, see /etc/systemd/network/
+  when: not is_lxc
+
+- name: Configure loopback network
+  ansible.builtin.copy:
+    dest: /etc/systemd/network/00-lo.network
+    owner: root
+    group: systemd-network
+    mode: '0640'
+    content: |
+      [Match]
+      Name=lo
+
+      [Network]
+      Address=127.0.0.1/8
+      LinkLocalAddressing=no
+  when: not is_lxc
+
+- name: Configure primary network interface
+  ansible.builtin.copy:
+    dest: /etc/systemd/network/10-{{ ansible_default_ipv4.interface }}.network
+    owner: root
+    group: systemd-network
+    mode: '0640'
+    content: |
+      [Match]
+      Name={{ ansible_default_ipv4.interface }}
+
+      [Network]
+      DHCP=ipv4
+      IPv6AcceptRA=no
+      LinkLocalAddressing=ipv4
+
+      [Link]
+      RequiredForOnline=yes
+  when: not is_lxc
+
+- name: Enable systemd-networkd
+  ansible.builtin.service:
+    name: systemd-networkd
+    enabled: true
+  when: not is_lxc
+
+- name: Remove ifupdown
+  ansible.builtin.apt:
+    name: ifupdown
+    state: absent
+  when: not is_lxc
+
+# =============================================================================
+# systemd-journald
+# =============================================================================
+- name: Create systemd-journald config directory
+  ansible.builtin.file:
+    path: /etc/systemd/journald.conf.d
+    state: directory
+    mode: '0755'
+
+- name: Configure systemd-journald
+  ansible.builtin.copy:
+    dest: /etc/systemd/journald.conf.d/journald.conf
+    mode: '0644'
+    content: |
+      [Journal]
+      Storage=persistent
+      Compress=yes
+      SystemMaxUse=500M
+      SystemMaxFileSize=50M
+      MaxRetentionSec=2week
+      RateLimitInterval=30s
+      RateLimitBurst=1000
+      ForwardToKMsg=no
+      ForwardToSyslog=no
+      Seal=yes
+      MaxMessageSize=64K
+      SyncIntervalSec=5m
+
+- name: Enable systemd-journald
+  ansible.builtin.service:
+    name: systemd-journald
+    enabled: true
+
+# =============================================================================
+# systemd-timesyncd
+# =============================================================================
+- name: Create systemd-timesyncd config directory
+  ansible.builtin.file:
+    path: /etc/systemd/timesyncd.conf.d
+    state: directory
+    mode: '0755'
+
+- name: Configure systemd-timesyncd
+  ansible.builtin.copy:
+    dest: /etc/systemd/timesyncd.conf.d/timesyncd.conf
+    mode: '0644'
+    content: |
+      [Time]
+      NTP=0.se.pool.ntp.org 1.se.pool.ntp.org 2.se.pool.ntp.org
+      FallbackNTP=0.debian.pool.ntp.org 1.debian.pool.ntp.org
+      RootDistanceMaxSec=5
+      PollIntervalMinSec=32
+      PollIntervalMaxSec=2048
+      ConnectionRetrySec=30
+      SaveIntervalSec=60
+
+- name: Enable systemd-timesyncd
+  ansible.builtin.service:
+    name: systemd-timesyncd
+    enabled: true
+
+# =============================================================================
+# systemd-sleep
+# =============================================================================
+- name: Create systemd-sleep config directory
+  ansible.builtin.file:
+    path: /etc/systemd/sleep.conf.d
+    state: directory
+    mode: '0755'
+  when: not is_lxc
+
+- name: Configure systemd-sleep
+  ansible.builtin.copy:
+    dest: /etc/systemd/sleep.conf.d/sleep.conf
+    mode: '0644'
+    content: |
+      [Sleep]
+      AllowSuspend=no
+      AllowHibernation=no
+      AllowSuspendThenHibernate=no
+      AllowHybridSleep=no
+  when: not is_lxc
+
+# =============================================================================
+# Kernel parameters
+# =============================================================================
+- name: Configure quiet console kernel parameters
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/00-console_quiet.conf
+    mode: '0644'
+    content: |
+      kernel.printk=1 4 1 4
+  failed_when: false
+
+- name: Create systemd system.conf.d directory
+  ansible.builtin.file:
+    path: /etc/systemd/system.conf.d
+    state: directory
+    mode: '0755'
+
+- name: Configure systemd quiet logging
+  ansible.builtin.copy:
+    dest: /etc/systemd/system.conf.d/quiet.conf
+    mode: '0644'
+    content: |
+      [Manager]
+      LogTarget=journal
+      LogLevel=emerg
+
+# =============================================================================
+# Console
+# =============================================================================
+- name: Configure /etc/issue
+  vars:
+    os_color: "{{ '33' if ansible_distribution == 'Ubuntu' else '32' }}"
+  ansible.builtin.copy:
+    dest: /etc/issue
+    mode: '0644'
+    content: |
+      \e[{{ os_color }}m\S\e[0m
+      \e[37mKernel \r\e[0m
+      \e[90m\d \t\e[0m
+      \e[31m{{ ansible_default_ipv4.interface }}:\e[0m \4{{ '{' }}{{ ansible_default_ipv4.interface }}{{ '}' }}
+      \e[36mconsole:\e[0m \l
+
+- name: Configure keyboard layout
+  ansible.builtin.lineinfile:
+    path: /etc/default/keyboard
+    regexp: '^XKBVARIANT='
+    line: 'XKBVARIANT="mac_intl"'
+
+- name: Configure console codeset
+  ansible.builtin.lineinfile:
+    path: /etc/default/console-setup
+    regexp: '^CODESET='
+    line: 'CODESET="Lat15"'
+
+- name: Configure console font face
+  ansible.builtin.lineinfile:
+    path: /etc/default/console-setup
+    regexp: '^FONTFACE='
+    line: 'FONTFACE="Terminus"'
+
+- name: Configure console font size
+  ansible.builtin.lineinfile:
+    path: /etc/default/console-setup
+    regexp: '^FONTSIZE='
+    line: 'FONTSIZE="8x16"'
+
+# =============================================================================
+# Root account
+# =============================================================================
+- name: Create root XDG directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0700'
+  loop:
+    - /root/.cache
+    - /root/.local/share
+    - /root/.local/state
+
+- name: Configure root .bashrc
+  ansible.builtin.blockinfile:
+    path: /root/.bashrc
+    create: true
+    block: |
+      export PS1="\[\e[38;5;9m\]\u\[\e[38;5;15m\]@\[\e[38;5;9m\]\h\[\e[38;5;15m\]:\w \[\033[0m\]# "
+
+      export LS_OPTIONS='--color=auto'
+      alias ls='ls --color=auto'
+
+      alias rm='rm -i'
+      alias cp='cp -i'
+      alias mv='mv -i'
+      alias ll='ls -aFhl'
+      alias cls='clear'
+      alias ..='cd ..'
+
+- name: Configure root .profile
+  ansible.builtin.blockinfile:
+    path: /root/.profile
+    create: true
+    block: |
+      export XDG_CACHE_HOME=/root/.cache
+      export XDG_CONFIG_HOME=/root/.config
+      export XDG_DATA_HOME=/root/.local/share
+      export XDG_STATE_HOME=/root/.local/state
+
+- name: Seed root bash history
+  ansible.builtin.lineinfile:
+    path: /root/.bash_history
+    line: "sed -i '/options/ { /[[:space:]]quiet$/! s/$/ quiet/ }' /boot/efi/loader/entries/*.conf"
+    create: true
+  when: efi_loader_dir.stat.exists
+
+# =============================================================================
+# Systemd-boot
+# =============================================================================
+- name: Configure systemd-boot loader
+  ansible.builtin.copy:
+    dest: /boot/efi/loader/loader.conf
+    mode: '0644'
+    content: |
+      timeout 3
+      editor no
+      console-mode keep
+  when: efi_loader_dir.stat.exists
+
+# =============================================================================
+# Reboot
+# =============================================================================
+- name: Reboot
+  ansible.builtin.reboot:
+    reboot_timeout: 300
